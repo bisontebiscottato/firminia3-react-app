@@ -1,0 +1,442 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap')
+layer(base);
+
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:is(.dark *));
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --font-sans:
+    IBM Plex Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Helvetica Neue, Arial, sans-serif;
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-wiggle: wiggle 2s ease-in-out infinite;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(3deg);
+    }
+    75% {
+      transform: rotate(-3deg);
+    }
+  }
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  @media (width >= --theme(--breakpoint-sm)) {
+    max-width: none;
+  }
+  @media (width >= 1400px) {
+    max-width: 1400px;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Mobile-friendly radius system */
+  --radius-xs: calc(var(--radius) - 6px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@layer utilities {
+  :root {
+    /* Mobile App Design Token - IBM Plex Sans Font Family */
+    --font-family-primary:
+      'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+      'Helvetica Neue', Arial, sans-serif;
+
+    /* Mobile App Design Token - Colors */
+    --mobile-bg-primary: #ffffff;
+    --mobile-text-primary: #111111;
+    --mobile-interaction-primary: #007556;
+
+    /* WCAG 2.1 AA Compliant Text Sizes (minimum 16px for mobile) */
+    --font-size: 18px;
+    --text-xs: 0.75rem; /* 12px - only for metadata/labels */
+    --text-sm: 0.875rem; /* 14px - secondary text */
+    --text-base: 1rem; /* 16px - body text (WCAG compliant) */
+    --text-lg: 1.125rem; /* 18px - headings */
+    --text-xl: 1.25rem; /* 20px - headings */
+    --text-2xl: 1.5rem; /* 24px - main headings */
+
+    /* Mobile App Token Mapping */
+    --background: var(--mobile-bg-primary);
+    --foreground: var(--mobile-text-primary);
+    --card: var(--mobile-bg-primary);
+    --card-foreground: var(--mobile-text-primary);
+    --popover: var(--mobile-bg-primary);
+    --popover-foreground: var(--mobile-text-primary);
+
+    /* Primary interaction color with WCAG AA contrast ratio */
+    --primary: var(--mobile-interaction-primary);
+    --primary-foreground: #ffffff;
+
+    /* Secondary colors maintaining accessibility */
+    --secondary: #f5f5f5;
+    --secondary-foreground: var(--mobile-text-primary);
+    --muted: #f9f9f9;
+    --muted-foreground: #333333;
+    --accent: #e6f7f3;
+    --accent-foreground: var(--mobile-interaction-primary);
+
+    /* Status colors with WCAG AA compliance */
+    --destructive: #dc2626;
+    --destructive-foreground: #ffffff;
+    --success: #16a34a;
+    --success-foreground: #ffffff;
+    --warning: #d97706;
+    --warning-foreground: #ffffff;
+
+    /* Borders and inputs */
+    --border: rgba(17, 17, 17, 0.1);
+    --input: rgba(17, 17, 17, 0.05);
+    --input-background: #fafafa;
+    --switch-background: #e5e7eb;
+    --ring: var(--mobile-interaction-primary);
+
+    /* Font weights */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Charts with accessible colors */
+    --chart-1: var(--mobile-interaction-primary);
+    --chart-2: #059669;
+    --chart-3: #0891b2;
+    --chart-4: #7c3aed;
+    --chart-5: #dc2626;
+
+    /* Mobile-friendly border radius */
+    --radius: 0.5rem;
+
+    /* Sidebar tokens */
+    --sidebar: var(--mobile-bg-primary);
+    --sidebar-foreground: var(--mobile-text-primary);
+    --sidebar-primary: var(--mobile-interaction-primary);
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #f9f9f9;
+    --sidebar-accent-foreground: var(--mobile-text-primary);
+    --sidebar-border: rgba(17, 17, 17, 0.1);
+    --sidebar-ring: var(--mobile-interaction-primary);
+
+    /* Mobile touch targets - WCAG 2.1 AA minimum 44x44px */
+    --touch-target-min: 44px;
+    --touch-target-spacing: 8px;
+
+    /* Custom spacing */
+    --spacing: 0.2rem;
+  }
+
+  /* Dark mode support maintaining brand colors */
+  .dark {
+    --mobile-bg-primary: #111111;
+    --mobile-text-primary: #ffffff;
+
+    --background: var(--mobile-bg-primary);
+    --foreground: var(--mobile-text-primary);
+    --card: #1a1a1a;
+    --card-foreground: var(--mobile-text-primary);
+    --popover: #1a1a1a;
+    --popover-foreground: var(--mobile-text-primary);
+    --primary: var(--mobile-interaction-primary);
+    --primary-foreground: #ffffff;
+    --secondary: #262626;
+    --secondary-foreground: var(--mobile-text-primary);
+    --muted: #1f1f1f;
+    --muted-foreground: #a3a3a3;
+    --accent: #1a2e29;
+    --accent-foreground: #4ade80;
+    --border: rgba(255, 255, 255, 0.1);
+    --input: rgba(255, 255, 255, 0.05);
+    --input-background: #1f1f1f;
+    --switch-background: #374151;
+    --ring: var(--mobile-interaction-primary);
+
+    --sidebar: #1a1a1a;
+    --sidebar-foreground: var(--mobile-text-primary);
+    --sidebar-primary: var(--mobile-interaction-primary);
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #262626;
+    --sidebar-accent-foreground: var(--mobile-text-primary);
+    --sidebar-border: rgba(255, 255, 255, 0.1);
+    --sidebar-ring: var(--mobile-interaction-primary);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-family-primary);
+    /* WCAG 2.1 AA: Ensure smooth text rendering on mobile */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Mobile-first touch targets */
+  button,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  .touch-target {
+    min-height: var(--touch-target-min);
+    min-width: var(--touch-target-min);
+  }
+
+  /* Touch targets spacing removed - handled manually in components */
+}
+
+/**
+ * WCAG 2.1 AA Compliant Typography for Mobile
+ * Minimum font sizes and proper contrast ratios
+ */
+@layer base {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
+    h1 {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.4;
+      font-family: var(--font-family-primary);
+    }
+
+    h2 {
+      font-size: var(--text-xl);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.4;
+      font-family: var(--font-family-primary);
+    }
+
+    h3 {
+      font-size: var(--text-lg);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.4;
+      font-family: var(--font-family-primary);
+    }
+
+    h4 {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+      font-family: var(--font-family-primary);
+    }
+
+    p {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.6;
+      font-family: var(--font-family-primary);
+    }
+
+    label {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+      font-family: var(--font-family-primary);
+    }
+
+    button {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+      font-family: var(--font-family-primary);
+    }
+
+    input,
+    textarea,
+    select {
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+      font-family: var(--font-family-primary);
+    }
+
+    /* Small text for metadata - use sparingly */
+    small,
+    .text-small {
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.4;
+      font-family: var(--font-family-primary);
+    }
+  }
+}
+
+html {
+  font-size: var(--font-size);
+}
+
+/* Mobile accessibility utilities */
+@media (max-width: 768px) {
+  :root {
+    /* Slightly larger touch targets on smaller screens */
+    --touch-target-min: 48px;
+    --touch-target-spacing: 12px;
+  }
+
+  /* Ensure text is never smaller than 16px on mobile to prevent zoom */
+  input,
+  textarea,
+  select {
+    font-size: max(16px, var(--text-base)) !important;
+  }
+}
+
+/* High contrast mode support for accessibility */
+@media (prefers-contrast: high) {
+  :root {
+    --border: var(--mobile-text-primary);
+    --ring: var(--mobile-text-primary);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

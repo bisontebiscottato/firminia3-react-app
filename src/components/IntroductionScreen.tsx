@@ -82,7 +82,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
                   lineHeight: "1.5",
                 }}
               >
-                Make sure your FirminIA V3 device is powered off
+                Make sure your FirminIA V3 device is powered on
               </p>
             </div>
 

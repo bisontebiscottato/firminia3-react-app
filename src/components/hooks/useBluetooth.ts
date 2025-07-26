@@ -1,148 +1,148 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-interface BluetoothDevice {
-  id: string;
-  name: string;
-  status: 'searching' | 'found' | 'connected' | 'ready';
-  signalStrength?: number;
+const SERVICE_UUID = '0000fff0-0000-1000-8000-00805f9b34fb';
+const CHARACTERISTIC_UUID = '0000ff01-0000-1000-8000-00805f9b34fb';
+
+// Tipi Web Bluetooth nativi o fallback per TypeScript
+// (solo se non già dichiarati)
+declare global {
+  interface Navigator {
+    bluetooth?: any;
+  }
+  // Fallback per ambienti non browser
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface BluetoothDevice {
+    id?: string;
+    name?: string;
+    gatt?: any;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface BluetoothRemoteGATTCharacteristic {
+    writeValue(data: BufferSource): Promise<void>;
+  }
 }
 
-interface BluetoothState {
-  isEnabled: boolean;
-  isAvailable: boolean;
-  isChecking: boolean;
-  isPairing: boolean;
-  isConnected: boolean;
-  connectedDevice: BluetoothDevice | null;
-  availableDevices: BluetoothDevice[];
+export interface BluetoothDeviceInfo {
+  id: string;
+  name: string;
+  device: BluetoothDevice;
 }
 
 export const useBluetooth = () => {
-  const [bluetoothState, setBluetoothState] = useState<BluetoothState>({
-    isEnabled: false,
-    isAvailable: true,
-    isChecking: true,
-    isPairing: false,
-    isConnected: false,
-    connectedDevice: null,
-    availableDevices: []
-  });
+  const [isEnabled] = useState<boolean>(true); // Assume true, Web Bluetooth non espone stato
+  const [isAvailable] = useState<boolean>(typeof navigator !== 'undefined' && !!navigator.bluetooth);
+  const [isChecking, setIsChecking] = useState<boolean>(false);
+  const [isPairing, setIsPairing] = useState<boolean>(false);
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [connectedDevice, setConnectedDevice] = useState<BluetoothDeviceInfo | null>(null);
+  const [availableDevices, setAvailableDevices] = useState<BluetoothDeviceInfo[]>([]);
+  const [characteristic, setCharacteristic] = useState<BluetoothRemoteGATTCharacteristic | null>(null);
 
-  // Controlla lo stato iniziale del Bluetooth
-  useEffect(() => {
-    const checkBluetoothStatus = async () => {
-      setBluetoothState(prev => ({ ...prev, isChecking: true }));
-      
-      // Simula una chiamata API per verificare lo stato del Bluetooth
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Per il demo, impostiamo il Bluetooth come spento inizialmente
-      setBluetoothState(prev => ({
-        ...prev,
-        isEnabled: false,
-        isChecking: false
-      }));
-    };
-
-    checkBluetoothStatus();
-  }, []);
-
-  const requestBluetoothEnable = async () => {
+  // Scansione dispositivi: mostra solo quelli con 'firminia' nel nome
+  const startPairing = async () => {
+    setIsPairing(true);
+    setIsChecking(true);
+    setAvailableDevices([]);
     try {
-      console.log('Richiesta attivazione Bluetooth...');
-      
-      // Simula l'attivazione del Bluetooth
-      setBluetoothState(prev => ({ 
-        ...prev, 
-        isEnabled: true 
-      }));
-      
+      if (!navigator.bluetooth) throw new Error('Web Bluetooth non supportato');
+      const device: BluetoothDevice = await navigator.bluetooth.requestDevice({
+        acceptAllDevices: true,
+        optionalServices: [SERVICE_UUID],
+      });
+      // Filtra per nome
+      const name = (device.name || '').toLowerCase();
+      if (name.includes('firminia')) {
+        setAvailableDevices([{ id: device.id || 'unknown', name: device.name || 'Unknown', device }]);
+      } else {
+        setAvailableDevices([]);
+        throw new Error('Nessun dispositivo "firminia" trovato.');
+      }
+      setIsChecking(false);
+      setIsPairing(false);
+      return device;
+    } catch (error) {
+      setIsChecking(false);
+      setIsPairing(false);
+      setAvailableDevices([]);
+      throw error;
+    }
+  };
+
+  // Connessione al device e salvataggio characteristic
+  const connectToDevice = async (info: BluetoothDeviceInfo) => {
+    try {
+      setIsChecking(true);
+      const server = await (info.device as any).gatt?.connect();
+      if (!server) throw new Error('Impossibile connettersi al device');
+      const service = await server.getPrimaryService(SERVICE_UUID);
+      const char = await service.getCharacteristic(CHARACTERISTIC_UUID);
+      setCharacteristic(char);
+      setConnectedDevice(info);
+      setIsConnected(true);
+      setIsChecking(false);
       return true;
     } catch (error) {
-      console.error('Errore nell\'attivazione del Bluetooth:', error);
-      return false;
+      setIsChecking(false);
+      setIsConnected(false);
+      setConnectedDevice(null);
+      setCharacteristic(null);
+      throw error;
     }
   };
 
-  const openBluetoothSettings = () => {
-    if (typeof window !== 'undefined') {
-      alert('Apertura impostazioni Bluetooth del dispositivo...');
-    }
-    
-    // Simula l'apertura delle impostazioni e l'attivazione
-    setTimeout(() => {
-      requestBluetoothEnable();
-    }, 1000);
-  };
-
-  const startPairing = () => {
-    setBluetoothState(prev => ({
-      ...prev,
-      isPairing: true,
-      availableDevices: []
-    }));
-  };
-
-  const connectToDevice = async (device: BluetoothDevice) => {
-    try {
-      // Simula la connessione al dispositivo
-      setBluetoothState(prev => ({
-        ...prev,
-        isPairing: false,
-        isConnected: true,
-        connectedDevice: { ...device, status: 'connected' }
-      }));
-      
-      console.log(`Connesso al dispositivo: ${device.name}`);
-      return true;
-    } catch (error) {
-      console.error('Errore nella connessione:', error);
-      return false;
-    }
-  };
-
+  // Disconnessione
   const disconnectDevice = () => {
-    setBluetoothState(prev => ({
-      ...prev,
-      isConnected: false,
-      connectedDevice: null
-    }));
+    if (connectedDevice?.device && (connectedDevice.device as any).gatt?.connected) {
+      (connectedDevice.device as any).gatt.disconnect();
+    }
+    setIsConnected(false);
+    setConnectedDevice(null);
+    setCharacteristic(null);
   };
 
+  // Invio configurazione JSON
+  const sendConfiguration = async (config: object) => {
+    if (!characteristic) throw new Error('Nessun device connesso');
+    const json = JSON.stringify(config);
+    // Converti in Uint8Array (UTF-8)
+    const encoder = new TextEncoder();
+    const data = encoder.encode(json);
+    await characteristic.writeValue(data);
+  };
+
+  // Mock: apertura impostazioni Bluetooth
+  const openBluetoothSettings = () => {
+    alert('Apri le impostazioni Bluetooth del dispositivo manualmente.');
+  };
+
+  // Mock: refresh stato Bluetooth
   const refreshStatus = () => {
-    setBluetoothState(prev => ({ 
-      ...prev, 
-      isChecking: true 
-    }));
-    
-    // Riavvia il controllo dello stato
-    setTimeout(() => {
-      setBluetoothState(prev => ({ 
-        ...prev, 
-        isChecking: false,
-        isEnabled: Math.random() > 0.3 // Maggiore probabilità di essere acceso
-      }));
-    }, 1000);
+    window.location.reload();
   };
 
+  // Mock: reset pairing
   const resetPairing = () => {
-    setBluetoothState(prev => ({
-      ...prev,
-      isPairing: false,
-      isConnected: false,
-      connectedDevice: null,
-      availableDevices: []
-    }));
+    setIsPairing(false);
+    setIsConnected(false);
+    setConnectedDevice(null);
+    setAvailableDevices([]);
+    setCharacteristic(null);
   };
 
   return {
-    ...bluetoothState,
-    requestBluetoothEnable,
-    openBluetoothSettings,
+    isEnabled,
+    isAvailable,
+    isChecking,
+    isPairing,
+    isConnected,
+    connectedDevice,
+    availableDevices,
     startPairing,
     connectToDevice,
     disconnectDevice,
+    sendConfiguration,
+    openBluetoothSettings,
     refreshStatus,
-    resetPairing
+    resetPairing,
   };
 };

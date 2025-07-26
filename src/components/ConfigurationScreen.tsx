@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { RefreshCw, CheckCircle, XCircle } from "lucide-react";
+import { RefreshCw, CheckCircle, XCircle, Bluetooth } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { toast } from "sonner";
+import { BluetoothDeviceInfo } from "./hooks/useBluetooth";
 
 interface FirminiaConfig {
   ssid: string;
@@ -17,20 +18,28 @@ interface ConfigurationScreenProps {
   onBack?: () => void;
   onSaveConfig?: (config: FirminiaConfig) => Promise<void>;
   onRefresh?: () => void;
+  isConnected: boolean;
+  connectedDevice: BluetoothDeviceInfo | null;
+  connectToDevice: (device: BluetoothDeviceInfo) => Promise<any>;
+  sendConfiguration: (config: object) => Promise<void>;
 }
 
 const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
   onBack,
   onSaveConfig,
   onRefresh,
+  isConnected,
+  connectedDevice,
+  connectToDevice,
+  sendConfiguration,
 }) => {
   // Current configuration (in a real app this would be loaded from device)
   const originalConfig: FirminiaConfig = {
-    ssid: "TP-Link 912390",
-    password: "your_wifi_password",
-    token: "your_api_token",
-    user: "your_user_identifier",
-    interval: "3",
+    ssid: "",
+    password: "",
+    token: "",
+    user: "",
+    interval: "500000",
   };
 
   const [config, setConfig] = useState<FirminiaConfig>(originalConfig);
@@ -68,35 +77,60 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
     }
   };
 
+  // Mostra stato connessione in tempo reale
+  const renderConnectionStatus = () => (
+    <div className="flex items-center gap-2 mb-4">
+      <Bluetooth size={18} className={isConnected ? "text-success" : "text-orange-500"} />
+      <span style={{ color: isConnected ? "#007556" : "#ef4444", fontWeight: 500 }}>
+        {isConnected ? `Connected to ${connectedDevice?.name || "device"}` : "Not connected"}
+      </span>
+    </div>
+  );
+
+  // Invio con tentativo di riconnessione se non connesso
   const handleSave = async () => {
     setIsLoading(true);
-
     try {
+      let connected = isConnected;
+      // Se non connesso, prova a riconnetterti
+      if (!connected) {
+        if (connectedDevice) {
+          toast("Trying to reconnect to device...");
+          await connectToDevice(connectedDevice);
+          connected = true;
+        } else {
+          throw new Error("Device not connected");
+        }
+      }
+      if (!connected) throw new Error("Device not connected");
+      await sendConfiguration({
+        ssid: config.ssid,
+        password: config.password,
+        server: "askmesign.askmesuite.com",
+        port: "443",
+        url: "https://askmesign.askmesuite.com/api/v2/files/pending?page=0&size=1",
+        token: config.token,
+        user: config.user,
+        interval: config.interval,
+      });
       if (onSaveConfig) {
         await onSaveConfig(config);
       }
-
-      // Success
       setIsLoading(false);
       toast.success("Configuration saved", {
         description: "Parameters have been sent to FirminIA V3 device",
         icon: <CheckCircle size={20} style={{ color: "#007556" }} />,
       });
-
-      // Return to previous screen after short delay
       setTimeout(() => {
         if (onBack) {
           onBack();
         }
       }, 1500);
-    } catch (error) {
-      console.error("Error during save:", error);
+    } catch (error: any) {
       setIsLoading(false);
-
-      // Error
       toast.error("Error during save", {
         description:
-          "Unable to send configuration to device. Please try again.",
+          error?.message || "Unable to send configuration to device. Please try again.",
         icon: <XCircle size={20} style={{ color: "#ef4444" }} />,
       });
     }
@@ -118,12 +152,12 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
     {
       key: "password" as keyof FirminiaConfig,
       label: "Your WiFi network password",
-      type: "password",
+      type: "text",
     },
     {
       key: "token" as keyof FirminiaConfig,
       label: "Your AskMeSign token",
-      type: "password",
+      type: "text",
     },
     {
       key: "user" as keyof FirminiaConfig,
@@ -132,7 +166,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
     },
     {
       key: "interval" as keyof FirminiaConfig,
-      label: "How often to check for documents to sign (minutes)",
+      label: "How often to check for documents to sign (milliseconds)",
       type: "number",
     },
   ];
@@ -179,6 +213,8 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
             </span>
           </Button>
         </div>
+        {/* Stato connessione realtime */}
+        {renderConnectionStatus()}
       </div>
 
       {/* Form */}
@@ -241,11 +277,11 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
           </Button>
           <Button
             onClick={handleSave}
-            disabled={isLoading}
+            disabled={isLoading || !isConnected}
             className="flex-1 h-12 rounded-lg"
             style={{
               minHeight: "48px",
-              backgroundColor: "#007556",
+              backgroundColor: isConnected ? "#007556" : "#cccccc",
               color: "#ffffff",
               fontFamily:
                 "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",

@@ -159,7 +159,7 @@ const MainApp: React.FC<{
 };
 
 // Component to manage app flow
-const AppFlow: React.FC = () => {
+const AppFlow: React.FC<{ bluetooth: ReturnType<typeof useBluetooth> }> = ({ bluetooth }) => {
   const {
     isEnabled: isBluetoothEnabled,
     isChecking: isCheckingBluetooth,
@@ -172,50 +172,18 @@ const AppFlow: React.FC = () => {
     disconnectDevice,
     refreshStatus,
     resetPairing,
-  } = useBluetooth();
+    sendConfiguration,
+    // aggiungi qui tutte le funzioni/props che vuoi passare
+  } = bluetooth;
 
   const [showConfiguration, setShowConfiguration] = React.useState(false);
 
-  // Automatically start pairing when Bluetooth is active
-  React.useEffect(() => {
-    if (isBluetoothEnabled && !isPairing && !isConnected) {
-      startPairing();
-    }
-  }, [isBluetoothEnabled, isPairing, isConnected, startPairing]);
-
   const handleSaveConfiguration = async (config: FirminiaConfig) => {
-    console.log("Saving configuration:", config);
-
-    try {
-      // Simulates sending configuration to FirminIA V3 device
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      // In a real app, you would send data via Bluetooth to the device
-      // Example: await bluetoothService.sendConfiguration(config);
-
-      console.log("Configuration saved successfully:", config);
-    } catch (error) {
-      console.error("Error during save:", error);
-      // Re-throw error to handle it in configuration component
-      throw new Error("Unable to communicate with FirminIA V3 device");
-    }
+    // Qui puoi aggiungere logica custom se serve
   };
 
   const handleRefreshConfiguration = async () => {
-    console.log("Refresh configuration from device");
-
-    try {
-      // Simulates retrieving configuration from device
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // In a real app, you would retrieve data from device via Bluetooth
-      // Example: const currentConfig = await bluetoothService.getConfiguration();
-
-      console.log("Configuration updated from device");
-    } catch (error) {
-      console.error("Error during refresh:", error);
-      throw new Error("Unable to retrieve configuration from device");
-    }
+    // Qui puoi aggiungere logica custom se serve
   };
 
   // If Bluetooth is being checked, show loading
@@ -244,6 +212,7 @@ const AppFlow: React.FC = () => {
   if (isConnected && connectedDevice && showConfiguration) {
     return (
       <ConfigurationScreen
+        {...bluetooth}
         onBack={() => setShowConfiguration(false)}
         onSaveConfig={handleSaveConfiguration}
         onRefresh={handleRefreshConfiguration}
@@ -273,6 +242,7 @@ const AppFlow: React.FC = () => {
         resetPairing();
         refreshStatus();
       }}
+      {...bluetooth}
     />
   );
 };
@@ -284,6 +254,7 @@ const App: React.FC = () => {
   });
 
   const [showIntroduction, setShowIntroduction] = React.useState(true);
+  const bluetooth = useBluetooth();
 
   // Show splash screen first
   if (showSplashScreen) {
@@ -298,7 +269,7 @@ const App: React.FC = () => {
   // Then handle main app flow
   return (
     <>
-      <AppFlow />
+      <AppFlow bluetooth={bluetooth} />
       <Toaster
         position="top-center"
         expand={true}

@@ -440,6 +440,22 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
           </Button>
         </div>
       </div>
+      
+      {/* Version info */}
+      <div className="mt-8 mb-6">
+        <p
+          className="text-center"
+          style={{
+            fontSize: "0.75rem",
+            fontWeight: "400",
+            color: "#999999",
+            fontFamily:
+              "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
+          }}
+        >
+          Version 1.2.0 - Andrea Mancini | <a href="mailto:biso@biso.it">biso@biso.it</a>
+        </p>
+      </div>
     </div>
   );
 };

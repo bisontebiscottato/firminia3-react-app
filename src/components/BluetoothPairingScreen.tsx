@@ -91,7 +91,7 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
         <div className="flex justify-center">
           <div className="relative">
             <div 
-              className="w-32 h-20 rounded-xl border-2 flex items-center justify-center relative"
+              className="w-32 h-20 rounded-xl border-2 flex items-center justify-center relative animate-pulse"
               style={{ 
                 borderColor: '#007556',
                 backgroundColor: 'rgba(0, 117, 86, 0.05)'
@@ -187,7 +187,7 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
                     </div>
                     <div className="text-left">
                       <div className="font-medium" style={{ color: '#111111', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>{device.name}</div>
-                      <div className="text-sm" style={{ color: '#666666', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>Ready to connect</div>
+                      <div className="text-sm" style={{ color: '#666666', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>Click this box, then press "Select"</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">

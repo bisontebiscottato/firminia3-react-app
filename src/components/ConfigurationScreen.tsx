@@ -12,6 +12,8 @@ interface FirminiaConfig {
   token: string;
   user: string;
   interval: string;
+  server: string;
+  port: string;
 }
 
 interface ValidationErrors {
@@ -20,6 +22,8 @@ interface ValidationErrors {
   token?: string;
   user?: string;
   interval?: string;
+  server?: string;
+  port?: string;
 }
 
 interface ConfigurationScreenProps {
@@ -48,6 +52,8 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
     token: "",
     user: "",
     interval: "",
+    server: "askmesign.askmesuite.com",
+    port: "443",
   };
 
   const [config, setConfig] = useState<FirminiaConfig>(originalConfig);
@@ -98,6 +104,28 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
         const interval = parseInt(value);
         if (interval < 10000 || interval > 9000000) {
           return 'Interval must be between 10,000 and 9,000,000';
+        }
+        break;
+      
+      case 'server':
+        if (!value || value.trim().length === 0) {
+          return 'Server is required';
+        }
+        if (!value.includes('.')) {
+          return 'Server must contain at least one dot';
+        }
+        break;
+      
+      case 'port':
+        if (!value || value.trim().length === 0) {
+          return 'Port is required';
+        }
+        if (!/^\d+$/.test(value)) {
+          return 'Port must contain only digits';
+        }
+        const port = parseInt(value);
+        if (port < 1 || port > 65535) {
+          return 'Port must be between 1 and 65535';
         }
         break;
     }
@@ -198,9 +226,9 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
       await sendConfiguration({
         ssid: config.ssid,
         password: config.password,
-        server: "askmesign.askmesuite.com",
-        port: "443",
-        url: "https://askmesign.askmesuite.com/api/v2/files/pending?page=0&size=1",
+        server: config.server,
+        port: config.port,
+        url: `https://${config.server}/api/v2/files/pending?page=0&size=1`,
         token: config.token,
         user: config.user,
         interval: config.interval,
@@ -245,6 +273,16 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
       key: "password" as keyof FirminiaConfig,
       label: "Your WiFi network password",
       type: "text",
+    },
+    {
+      key: "server" as keyof FirminiaConfig,
+      label: "AskMeSign server address",
+      type: "text",
+    },
+    {
+      key: "port" as keyof FirminiaConfig,
+      label: "Server port",
+      type: "number",
     },
     {
       key: "token" as keyof FirminiaConfig,

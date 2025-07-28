@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { RefreshCw, CheckCircle, XCircle, Bluetooth } from "lucide-react";
+import { CheckCircle, XCircle, Bluetooth } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -162,34 +162,11 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
     }));
   };
 
-  const handleRefresh = async () => {
-    setIsLoading(true);
-    try {
-      if (onRefresh) {
-        await onRefresh();
-      }
-      // Simulates configuration refresh
-      setTimeout(() => {
-        setIsLoading(false);
-        setConfig(originalConfig); // Reset to original values
-        toast.success("Configuration updated", {
-          description: "Parameters have been reloaded from device",
-          icon: <CheckCircle size={20} style={{ color: "#007556" }} />,
-        });
-      }, 1000);
-    } catch (error) {
-      console.error("Error during refresh:", error);
-      setIsLoading(false);
-      toast.error("Error during refresh", {
-        description: "Unable to load configuration from device",
-        icon: <XCircle size={20} style={{ color: "#ef4444" }} />,
-      });
-    }
-  };
+
 
   // Mostra stato connessione in tempo reale
   const renderConnectionStatus = () => (
-    <div className="flex items-center gap-2 mb-4">
+    <div className="flex items-center justify-center gap-2">
       <Bluetooth size={18} className={isConnected ? "text-success" : "text-orange-500"} />
       <span style={{ color: isConnected ? "#007556" : "#ef4444", fontWeight: 500 }}>
         {isConnected ? `Connected to ${connectedDevice?.name || "device"}` : "Not connected"}
@@ -274,7 +251,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
   }> = [
     {
       key: "ssid",
-      label: "Your WiFi network name",
+      label: "Your WiFi network name (SSID)",
       type: "text",
     },
     {
@@ -320,51 +297,16 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="sticky top-0 bg-background border-b border-border px-6 py-4 z-10" style={{ top: "50px" }}>
-        <div className="flex items-center justify-between">
-          <h1
-            style={{
-              fontSize: "1.5rem",
-              fontWeight: "600",
-              color: "#111111",
-              fontFamily:
-                "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
-              lineHeight: "1.2",
-            }}
-          >
-            Current Configuration
-          </h1>
-          <Button
-            variant="ghost"
-            onClick={handleRefresh}
-            disabled={isLoading}
-            className="h-11 px-4 flex items-center gap-2"
-            style={{ minHeight: "44px" }}
-          >
-            <RefreshCw
-              size={20}
-              className={`${isLoading ? "animate-spin" : ""}`}
-              style={{ color: "#007556" }}
-            />
-            <span
-              style={{
-                fontSize: "0.875rem",
-                fontWeight: "500",
-                color: "#007556",
-                fontFamily:
-                  "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
-              }}
-            >
-              Load again
-            </span>
-          </Button>
+      <div className="sticky top-0 border-b border-border px-6 py-4" style={{ top: "50px", backgroundColor: "#F2F8F6", zIndex: 1001 }}>
+        <div className="flex items-center justify-center">
+
         </div>
         {/* Stato connessione realtime */}
         {renderConnectionStatus()}
       </div>
 
       {/* Form */}
-      <div className="p-6 pb-32">
+      <div className="p-6 pb-32" style={{ paddingTop: "50px" }}>
         <div className="max-w-md mx-auto space-y-6">
           {configFields.map((field) => (
             <div key={field.key} className="space-y-2">
@@ -388,15 +330,22 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
                   disabled={isLoading}
                 >
                   <SelectTrigger
-                    className={`w-full h-12 rounded-lg border bg-background px-4 ${
-                      errors[field.key] ? 'border-red-500' : 'border-border'
-                    }`}
-                    style={{
-                      minHeight: "48px",
-                      fontFamily:
-                        "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
-                      fontSize: "16px",
-                    }}
+                                      className={`w-full h-12 rounded-lg border px-4 ${
+                    errors[field.key] ? 'border-red-500' : 'border-border'
+                  }`}
+                  style={{
+                    minHeight: "48px",
+                    fontFamily:
+                      "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
+                    fontSize: "16px",
+                    backgroundColor: "#E4F2FF",
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.backgroundColor = "#FEFCED";
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.backgroundColor = "#E4F2FF";
+                  }}
                   >
                     <SelectValue placeholder="Select an option" />
                   </SelectTrigger>
@@ -416,7 +365,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
                   onChange={(e) => handleInputChange(field.key, e.target.value)}
                   placeholder={originalConfig[field.key]}
                   disabled={isLoading}
-                  className={`w-full h-12 rounded-lg border bg-background px-4 ${
+                  className={`w-full h-12 rounded-lg border px-4 ${
                     errors[field.key] ? 'border-red-500' : 'border-border'
                   }`}
                   style={{
@@ -424,6 +373,13 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
                     fontFamily:
                       "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
                     fontSize: "16px", // Prevent zoom on iOS
+                    backgroundColor: "#E4F2FF",
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.backgroundColor = "#FEFCED";
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.backgroundColor = "#E4F2FF";
                   }}
                 />
               )}

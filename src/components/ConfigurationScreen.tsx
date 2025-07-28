@@ -3,6 +3,7 @@ import { RefreshCw, CheckCircle, XCircle, Bluetooth } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { toast } from "sonner";
 import { BluetoothDeviceInfo } from "./hooks/useBluetooth";
 
@@ -51,7 +52,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
     password: "",
     token: "",
     user: "",
-    interval: "",
+    interval: "5", // Default to 5 minutes
     server: "askmesign.askmesuite.com",
     port: "443",
   };
@@ -98,12 +99,10 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
         if (!value || value.trim().length === 0) {
           return 'Interval is required';
         }
-        if (!/^\d+$/.test(value)) {
-          return 'Interval must contain only digits';
-        }
-        const interval = parseInt(value);
-        if (interval < 10000 || interval > 9000000) {
-          return 'Interval must be between 10,000 and 9,000,000';
+        // Validazione per minuti (3, 5, 10, 15, 30, 60)
+        const validMinutes = ['3', '5', '10', '15', '30', '60'];
+        if (!validMinutes.includes(value)) {
+          return 'Please select a valid interval';
         }
         break;
       
@@ -223,6 +222,10 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
         }
       }
       if (!connected) throw new Error("Device not connected");
+      // Convert minutes to milliseconds
+      const intervalMinutes = parseInt(config.interval);
+      const intervalMilliseconds = intervalMinutes * 60 * 1000;
+      
       await sendConfiguration({
         ssid: config.ssid,
         password: config.password,
@@ -231,7 +234,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
         url: `https://${config.server}/api/v2/files/pending?page=0&size=1`,
         token: config.token,
         user: config.user,
-        interval: config.interval,
+        interval: intervalMilliseconds.toString(),
       });
       if (onSaveConfig) {
         await onSaveConfig(config);
@@ -263,41 +266,54 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
     }
   };
 
-  const configFields = [
+  const configFields: Array<{
+    key: keyof FirminiaConfig;
+    label: string;
+    type: "text" | "number" | "select";
+    options?: Array<{ value: string; label: string }>;
+  }> = [
     {
-      key: "ssid" as keyof FirminiaConfig,
+      key: "ssid",
       label: "Your WiFi network name",
       type: "text",
     },
     {
-      key: "password" as keyof FirminiaConfig,
+      key: "password",
       label: "Your WiFi network password",
       type: "text",
     },
     {
-      key: "server" as keyof FirminiaConfig,
+      key: "server",
       label: "AskMeSign server address",
       type: "text",
     },
     {
-      key: "port" as keyof FirminiaConfig,
+      key: "port",
       label: "Server port",
       type: "number",
     },
     {
-      key: "token" as keyof FirminiaConfig,
+      key: "token",
       label: "Your AskMeSign token",
       type: "text",
     },
     {
-      key: "user" as keyof FirminiaConfig,
+      key: "user",
       label: "Username you use to access AskMeSign",
       type: "text",
     },
     {
-      key: "interval" as keyof FirminiaConfig,
-      label: "How often to check for documents to sign (minutes)",
-      type: "number",
+      key: "interval",
+      label: "How often to check for documents to sign",
+      type: "select",
+      options: [
+        { value: "3", label: "3 minutes" },
+        { value: "5", label: "5 minutes" },
+        { value: "10", label: "10 minutes" },
+        { value: "15", label: "15 minutes" },
+        { value: "30", label: "30 minutes" },
+        { value: "60", label: "60 minutes" },
+      ],
     },
   ];
 
@@ -365,23 +381,52 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
               >
                 {field.label}
               </Label>
-              <Input
-                id={field.key}
-                type={field.type}
-                value={config[field.key]}
-                onChange={(e) => handleInputChange(field.key, e.target.value)}
-                placeholder={originalConfig[field.key]}
-                disabled={isLoading}
-                className={`w-full h-12 rounded-lg border bg-background px-4 ${
-                  errors[field.key] ? 'border-red-500' : 'border-border'
-                }`}
-                style={{
-                  minHeight: "48px",
-                  fontFamily:
-                    "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
-                  fontSize: "16px", // Prevent zoom on iOS
-                }}
-              />
+              {field.type === "select" ? (
+                <Select
+                  value={config[field.key]}
+                  onValueChange={(value) => handleInputChange(field.key, value)}
+                  disabled={isLoading}
+                >
+                  <SelectTrigger
+                    className={`w-full h-12 rounded-lg border bg-background px-4 ${
+                      errors[field.key] ? 'border-red-500' : 'border-border'
+                    }`}
+                    style={{
+                      minHeight: "48px",
+                      fontFamily:
+                        "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
+                      fontSize: "16px",
+                    }}
+                  >
+                    <SelectValue placeholder="Select an option" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {field.options?.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : (
+                <Input
+                  id={field.key}
+                  type={field.type}
+                  value={config[field.key]}
+                  onChange={(e) => handleInputChange(field.key, e.target.value)}
+                  placeholder={originalConfig[field.key]}
+                  disabled={isLoading}
+                  className={`w-full h-12 rounded-lg border bg-background px-4 ${
+                    errors[field.key] ? 'border-red-500' : 'border-border'
+                  }`}
+                  style={{
+                    minHeight: "48px",
+                    fontFamily:
+                      "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
+                    fontSize: "16px", // Prevent zoom on iOS
+                  }}
+                />
+              )}
               {errors[field.key] && (
                 <div className="text-red-500 text-sm mt-1" style={{
                   fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",

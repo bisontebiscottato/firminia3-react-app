@@ -267,7 +267,7 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
               lineHeight: '1.5'
             }}
           >
-            💡 Keep the device close to your phone during pairing!
+            💡 Keep your Firminia close to your device during pairing!
           </p>
         </div>
       </div>

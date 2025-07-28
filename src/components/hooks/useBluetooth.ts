@@ -80,6 +80,15 @@ export const useBluetooth = () => {
       setConnectedDevice(info);
       setIsConnected(true);
       setIsChecking(false);
+
+      // Aggiungi event listener per disconnessione automatica
+      (info.device as any).addEventListener('gattserverdisconnected', () => {
+        console.log('Device disconnesso automaticamente');
+        setIsConnected(false);
+        setConnectedDevice(null);
+        setCharacteristic(null);
+      });
+
       return true;
     } catch (error) {
       setIsChecking(false);

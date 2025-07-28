@@ -14,6 +14,14 @@ interface FirminiaConfig {
   interval: string;
 }
 
+interface ValidationErrors {
+  ssid?: string;
+  password?: string;
+  token?: string;
+  user?: string;
+  interval?: string;
+}
+
 interface ConfigurationScreenProps {
   onBack?: () => void;
   onSaveConfig?: (config: FirminiaConfig) => Promise<void>;
@@ -39,16 +47,91 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
     password: "",
     token: "",
     user: "",
-    interval: "500000",
+    interval: "",
   };
 
   const [config, setConfig] = useState<FirminiaConfig>(originalConfig);
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<ValidationErrors>({});
+
+  // Funzioni di validazione basate sui controlli C++
+  const validateField = (field: keyof FirminiaConfig, value: string): string | undefined => {
+    switch (field) {
+      case 'ssid':
+        if (!value || value.trim().length === 0) {
+          return 'SSID is required';
+        }
+        if (value.trim().length < 1) {
+          return 'SSID must be at least 1 character';
+        }
+        break;
+      
+      case 'password':
+        // Password può essere vuota come nel C++ originale
+        if (value === undefined || value === null) {
+          return 'Password is required';
+        }
+        break;
+      
+      case 'token':
+        if (!value) {
+          return 'Token is required';
+        }
+        if (!/^[a-zA-Z0-9]+$/.test(value)) {
+          return 'Token must contain only letters and numbers';
+        }
+        break;
+      
+      case 'user':
+        if (!value) {
+          return 'Username is required';
+        }
+        break;
+      
+      case 'interval':
+        if (!value || value.trim().length === 0) {
+          return 'Interval is required';
+        }
+        if (!/^\d+$/.test(value)) {
+          return 'Interval must contain only digits';
+        }
+        const interval = parseInt(value);
+        if (interval < 10000 || interval > 9000000) {
+          return 'Interval must be between 10,000 and 9,000,000';
+        }
+        break;
+    }
+    return undefined;
+  };
+
+  const validateAllFields = (): boolean => {
+    const newErrors: ValidationErrors = {};
+    let isValid = true;
+
+    Object.keys(config).forEach((key) => {
+      const field = key as keyof FirminiaConfig;
+      const error = validateField(field, config[field]);
+      if (error) {
+        newErrors[field] = error;
+        isValid = false;
+      }
+    });
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleInputChange = (field: keyof FirminiaConfig, value: string) => {
     setConfig((prev) => ({
       ...prev,
       [field]: value,
+    }));
+    
+    // Validazione in tempo reale
+    const error = validateField(field, value);
+    setErrors(prev => ({
+      ...prev,
+      [field]: error
     }));
   };
 
@@ -89,6 +172,15 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
 
   // Invio con tentativo di riconnessione se non connesso
   const handleSave = async () => {
+    // Validazione prima dell'invio
+    if (!validateAllFields()) {
+      toast.error("Validation failed", {
+        description: "Please fix the errors in the form before sending",
+        icon: <XCircle size={20} style={{ color: "#ef4444" }} />,
+      });
+      return;
+    }
+
     setIsLoading(true);
     try {
       let connected = isConnected;
@@ -166,7 +258,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
     },
     {
       key: "interval" as keyof FirminiaConfig,
-      label: "How often to check for documents to sign (milliseconds)",
+      label: "How often to check for documents to sign (minutes)",
       type: "number",
     },
   ];
@@ -242,7 +334,9 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
                 onChange={(e) => handleInputChange(field.key, e.target.value)}
                 placeholder={originalConfig[field.key]}
                 disabled={isLoading}
-                className="w-full h-12 rounded-lg border border-border bg-background px-4"
+                className={`w-full h-12 rounded-lg border bg-background px-4 ${
+                  errors[field.key] ? 'border-red-500' : 'border-border'
+                }`}
                 style={{
                   minHeight: "48px",
                   fontFamily:
@@ -250,6 +344,13 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
                   fontSize: "16px", // Prevent zoom on iOS
                 }}
               />
+              {errors[field.key] && (
+                <div className="text-red-500 text-sm mt-1" style={{
+                  fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
+                }}>
+                  {errors[field.key]}
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -277,17 +378,18 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
           </Button>
           <Button
             onClick={handleSave}
-            disabled={isLoading || !isConnected}
+            disabled={isLoading || !isConnected || Object.values(errors).some(error => error !== undefined)}
             className="flex-1 h-12 rounded-lg"
             style={{
               minHeight: "48px",
-              backgroundColor: isConnected ? "#007556" : "#cccccc",
+              backgroundColor: isConnected && !Object.values(errors).some(error => error !== undefined) ? "#007556" : "#cccccc",
               color: "#ffffff",
               fontFamily:
                 "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
               fontSize: "1rem",
               fontWeight: "500",
             }}
+
           >
             {isLoading ? (
               <div className="flex items-center gap-2">

@@ -266,7 +266,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="sticky top-0 bg-background border-b border-border px-6 py-4 z-10">
+      <div className="sticky top-0 bg-background border-b border-border px-6 py-4 z-10" style={{ top: "50px" }}>
         <div className="flex items-center justify-between">
           <h1
             style={{
@@ -357,7 +357,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
       </div>
 
       {/* Fixed footer with buttons */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-6">
+      <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border p-6" style={{ zIndex: 999 }}>
         <div className="max-w-md mx-auto flex gap-4">
           <Button
             variant="outline"

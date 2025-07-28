@@ -174,7 +174,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
                 "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
             }}
           >
-            Version 1.0.0
+           Version 1.2.0 - Andrea Mancini | <a href="mailto:biso@biso.it">biso@biso.it</a> 
           </p>
         </div>
       </div>

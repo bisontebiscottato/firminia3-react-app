@@ -4,6 +4,7 @@ import IntroductionScreen from "./components/IntroductionScreen";
 import BluetoothOffScreen from "./components/BluetoothOffScreen";
 import BluetoothPairingScreen from "./components/BluetoothPairingScreen";
 import ConfigurationScreen from "./components/ConfigurationScreen";
+import Header from "./components/Header";
 import { useSplashScreen } from "./components/hooks/useSplashScreen";
 import { useBluetooth } from "./components/hooks/useBluetooth";
 import { Button } from "./components/ui/button";
@@ -149,7 +150,7 @@ const MainApp: React.FC<{
                   "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
               }}
             >
-              <strong>FirminIA V3</strong> - Version 1.0.0
+              <strong>FirminIA V3</strong> - Version 1.2.0 - Andrea Mancini, biso@biso.it
             </p>
           </div>
         </div>
@@ -258,18 +259,35 @@ const App: React.FC = () => {
 
   // Show splash screen first
   if (showSplashScreen) {
-    return <SplashScreen onLoadComplete={hideSplashScreen} />;
+    return (
+      <>
+        <Header />
+        <div style={{ paddingTop: "50px" }}>
+          <SplashScreen onLoadComplete={hideSplashScreen} />
+        </div>
+      </>
+    );
   }
 
   // Show introduction screen after splash
   if (showIntroduction) {
-    return <IntroductionScreen onContinue={() => setShowIntroduction(false)} />;
+    return (
+      <>
+        <Header />
+        <div style={{ paddingTop: "50px" }}>
+          <IntroductionScreen onContinue={() => setShowIntroduction(false)} />
+        </div>
+      </>
+    );
   }
 
   // Then handle main app flow
   return (
     <>
-      <AppFlow bluetooth={bluetooth} />
+      <Header />
+      <div style={{ paddingTop: "50px" }}>
+        <AppFlow bluetooth={bluetooth} />
+      </div>
       <Toaster
         position="top-center"
         expand={true}

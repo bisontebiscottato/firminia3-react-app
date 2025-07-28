@@ -44,7 +44,7 @@ export const useBluetooth = () => {
     setIsChecking(true);
     setAvailableDevices([]);
     try {
-      if (!navigator.bluetooth) throw new Error('Web Bluetooth non supportato');
+      if (!navigator.bluetooth) throw new Error('Web Bluetooth not supported');
       const device: BluetoothDevice = await navigator.bluetooth.requestDevice({
         acceptAllDevices: true,
         optionalServices: [SERVICE_UUID],
@@ -55,7 +55,7 @@ export const useBluetooth = () => {
         setAvailableDevices([{ id: device.id || 'unknown', name: device.name || 'Unknown', device }]);
       } else {
         setAvailableDevices([]);
-        throw new Error('Nessun dispositivo "firminia" trovato.');
+        throw new Error('No "Firminia V3" device found.'); 
       }
       setIsChecking(false);
       setIsPairing(false);
@@ -73,7 +73,7 @@ export const useBluetooth = () => {
     try {
       setIsChecking(true);
       const server = await (info.device as any).gatt?.connect();
-      if (!server) throw new Error('Impossibile connettersi al device');
+      if (!server) throw new Error('Unable to connect to device');
       const service = await server.getPrimaryService(SERVICE_UUID);
       const char = await service.getCharacteristic(CHARACTERISTIC_UUID);
       setCharacteristic(char);
@@ -81,9 +81,9 @@ export const useBluetooth = () => {
       setIsConnected(true);
       setIsChecking(false);
 
-      // Aggiungi event listener per disconnessione automatica
+      // Add event listener for automatic disconnection
       (info.device as any).addEventListener('gattserverdisconnected', () => {
-        console.log('Device disconnesso automaticamente');
+        console.log('Device automatically disconnected');
         setIsConnected(false);
         setConnectedDevice(null);
         setCharacteristic(null);
@@ -111,7 +111,7 @@ export const useBluetooth = () => {
 
   // Invio configurazione JSON
   const sendConfiguration = async (config: object) => {
-    if (!characteristic) throw new Error('Nessun device connesso');
+    if (!characteristic) throw new Error('No device connected');
     const json = JSON.stringify(config);
     // Converti in Uint8Array (UTF-8)
     const encoder = new TextEncoder();
@@ -119,9 +119,9 @@ export const useBluetooth = () => {
     await characteristic.writeValue(data);
   };
 
-  // Mock: apertura impostazioni Bluetooth
+  // Mock: open Bluetooth settings
   const openBluetoothSettings = () => {
-    alert('Apri le impostazioni Bluetooth del dispositivo manualmente.');
+    alert('Open device Bluetooth settings manually.');
   };
 
   // Mock: refresh stato Bluetooth

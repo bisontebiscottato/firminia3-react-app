@@ -28,20 +28,20 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   const handleRetry = async () => {
-    console.log('Bottone premuto!');
+    console.log('Button pressed!');
     setError(null);
     setSelectedDevice(null);
     if (!isBluetoothSupported) {
-      setError('Web Bluetooth API non supportata dal browser. Usa Chrome/Edge su desktop o Android.');
+      setError('Web Bluetooth API not supported by browser. Use Chrome/Edge on desktop or Android.');
       return;
     }
     try {
-      console.log('Chiamo startPairing...');
+      console.log('Calling startPairing...');
       await startPairing();
-      console.log('startPairing chiamata!');
+      console.log('startPairing called!');
     } catch (err: any) {
-      setError(err?.message || 'Errore scansione Bluetooth');
-      console.error('Errore in startPairing:', err);
+      setError(err?.message || 'Bluetooth scanning error');
+      console.error('Error in startPairing:', err);
     }
   };
 
@@ -55,7 +55,7 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
         await connectToDevice(selectedDevice);
         onDeviceConnect(selectedDevice);
       } catch (err: any) {
-        setError(err?.message || 'Errore connessione Bluetooth');
+        setError(err?.message || 'Bluetooth connection error');
       }
     }
   };
@@ -76,8 +76,8 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
             </div>
           </div>
           <div className="space-y-4">
-            <h1 className="text-center" style={{ fontSize: '1.5rem', fontWeight: '600', color: '#ef4444', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.4' }}>Web Bluetooth non supportato</h1>
-            <p className="text-center leading-relaxed" style={{ fontSize: '1rem', fontWeight: '400', color: '#ef4444', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.6' }}>Il tuo browser non supporta la Web Bluetooth API. Usa Google Chrome o Microsoft Edge su desktop o Android.</p>
+            <h1 className="text-center" style={{ fontSize: '1.5rem', fontWeight: '600', color: '#ef4444', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.4' }}>Web Bluetooth not supported</h1>
+            <p className="text-center leading-relaxed" style={{ fontSize: '1rem', fontWeight: '400', color: '#ef4444', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.6' }}>Your browser does not support Web Bluetooth API. Use Google Chrome or Microsoft Edge on desktop or Android.</p>
           </div>
         </div>
       </div>
@@ -128,7 +128,7 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
         {isPairing || isChecking ? (
           <div className="space-y-4">
             <h1 className="text-center" style={{ fontSize: '1.5rem', fontWeight: '600', color: '#111111', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.4' }}>Searching device</h1>
-            <p className="text-center leading-relaxed" style={{ fontSize: '1rem', fontWeight: '400', color: '#666666', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.6' }}>To activate pairing, start the device and press the button during Waking Up...</p>
+            <p className="text-center leading-relaxed" style={{ fontSize: '1rem', fontWeight: '400', color: '#666666', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.6' }}>To activate pairing, start the device and press the button during wake-up...</p>
             <div className="flex items-center justify-center gap-2 text-primary">
               <Radio size={16} className="animate-pulse" />
               <span className="text-sm" style={{ fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>Searching...</span>
@@ -147,7 +147,7 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
         ) : (
           <div className="space-y-4">
             <h1 className="text-center" style={{ fontSize: '1.5rem', fontWeight: '600', color: '#111111', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.4' }}>No devices found</h1>
-            <p className="text-center leading-relaxed" style={{ fontSize: '1rem', fontWeight: '400', color: '#666666', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.6' }}>Premi il bottone qui sotto per cercare dispositivi Bluetooth.</p>
+            <p className="text-center leading-relaxed" style={{ fontSize: '1rem', fontWeight: '400', color: '#666666', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.6' }}>Press the button below to search for Bluetooth devices.</p>
             <Button
               onClick={handleRetry}
               className="w-full h-12 mt-4"

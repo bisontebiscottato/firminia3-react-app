@@ -61,7 +61,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<ValidationErrors>({});
 
-  // Funzioni di validazione basate sui controlli C++
+  // Validation functions based on C++ checks
   const validateField = (field: keyof FirminiaConfig, value: string): string | undefined => {
     switch (field) {
       case 'ssid':
@@ -74,7 +74,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
         break;
       
       case 'password':
-        // Password può essere vuota come nel C++ originale
+        // Password can be empty as in original C++
         if (value === undefined || value === null) {
           return 'Password is required';
         }
@@ -99,7 +99,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
         if (!value || value.trim().length === 0) {
           return 'Interval is required';
         }
-        // Validazione per minuti (3, 5, 10, 15, 30, 60)
+        // Validation for minutes (3, 5, 10, 15, 30, 60)
         const validMinutes = ['3', '5', '10', '15', '30', '60'];
         if (!validMinutes.includes(value)) {
           return 'Please select a valid interval';
@@ -154,7 +154,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
       [field]: value,
     }));
     
-    // Validazione in tempo reale
+    // Real-time validation
     const error = validateField(field, value);
     setErrors(prev => ({
       ...prev,
@@ -164,7 +164,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
 
 
 
-  // Mostra stato connessione in tempo reale
+  // Show real-time connection status
   const renderConnectionStatus = () => (
     <div className="flex items-center justify-center gap-2">
       <Bluetooth size={18} className={isConnected ? "text-success" : "text-orange-500"} />
@@ -174,9 +174,9 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
     </div>
   );
 
-  // Invio con tentativo di riconnessione se non connesso
+  // Send with reconnection attempt if not connected
   const handleSave = async () => {
-    // Validazione prima dell'invio
+    // Validation before sending
     if (!validateAllFields()) {
       toast.error("Validation failed", {
         description: "Please fix the errors in the form before sending",
@@ -188,7 +188,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
     setIsLoading(true);
     try {
       let connected = isConnected;
-      // Se non connesso, prova a riconnetterti
+      // If not connected, try to reconnect
       if (!connected) {
         if (connectedDevice) {
           toast("Trying to reconnect to device...");

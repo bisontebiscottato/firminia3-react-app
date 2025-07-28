@@ -22,7 +22,7 @@ const BluetoothOffScreen: React.FC<BluetoothOffScreenProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 py-12" style={{ paddingTop: "70px" }}>
+    <div className="h-screen bg-background flex flex-col items-center justify-center px-6 py-12 overflow-hidden" style={{ paddingTop: "50px" }}>
       <div className="max-w-sm w-full text-center space-y-8">
         
         {/* Bluetooth off icon */}

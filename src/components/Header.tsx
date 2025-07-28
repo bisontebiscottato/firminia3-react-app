@@ -15,7 +15,7 @@ const Header: React.FC = () => {
         justifyContent: "center",
         zIndex: 1000,
         fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
-        fontSize: "1rem",
+        fontSize: "0.8rem",
         fontWeight: "500",
         color: "#111111",
       }}

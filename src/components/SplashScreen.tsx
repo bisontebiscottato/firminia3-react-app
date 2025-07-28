@@ -38,7 +38,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onLoadComplete }) => {
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-white flex flex-col items-center justify-center min-h-screen px-6">
+    <div className="h-screen bg-white flex flex-col items-center justify-center px-6 overflow-hidden" style={{ paddingTop: "50px" }}>
       {/* Logo FirminIA V3 */}
       <div className="mb-12 flex flex-col items-center">
         <img

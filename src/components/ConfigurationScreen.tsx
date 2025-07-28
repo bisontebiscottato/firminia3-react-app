@@ -295,9 +295,9 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="h-screen bg-background overflow-hidden" style={{ paddingTop: "50px", paddingBottom: "100px" }}>
       {/* Header */}
-      <div className="sticky top-0 border-b border-border px-6 py-4" style={{ top: "50px", backgroundColor: "#F2F8F6", zIndex: 1001 }}>
+      <div className="sticky top-0 border-b border-border px-6 py-4" style={{ top: "0px", backgroundColor: "#F2F8F6", zIndex: 1001 }}>
         <div className="flex items-center justify-center">
 
         </div>
@@ -306,7 +306,8 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
       </div>
 
       {/* Form */}
-      <div className="p-6 pb-32" style={{ paddingTop: "50px" }}>
+      <div className="p-6 pb-32 overflow-y-auto h-full" style={{ paddingTop: "50px" }}>
+        <h1 className="text-center" style={{ fontSize: "1.5rem", fontWeight: "600", color: "#111111", fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif", lineHeight: "1.4", paddingBottom: "20px"}}>Settings configuration</h1>
         <div className="max-w-md mx-auto space-y-6">
           {configFields.map((field) => (
             <div key={field.key} className="space-y-2">

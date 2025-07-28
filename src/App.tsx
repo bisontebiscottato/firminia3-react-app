@@ -262,9 +262,7 @@ const App: React.FC = () => {
     return (
       <>
         <Header />
-        <div style={{ paddingTop: "50px" }}>
-          <SplashScreen onLoadComplete={hideSplashScreen} />
-        </div>
+        <SplashScreen onLoadComplete={hideSplashScreen} />
       </>
     );
   }
@@ -274,9 +272,7 @@ const App: React.FC = () => {
     return (
       <>
         <Header />
-        <div style={{ paddingTop: "50px" }}>
-          <IntroductionScreen onContinue={() => setShowIntroduction(false)} />
-        </div>
+        <IntroductionScreen onContinue={() => setShowIntroduction(false)} />
       </>
     );
   }

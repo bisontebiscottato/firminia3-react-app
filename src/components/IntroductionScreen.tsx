@@ -11,7 +11,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
   onContinue,
 }) => {
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 py-8">
+    <div className="h-screen bg-background flex flex-col items-center justify-center px-6 py-8 overflow-hidden" style={{ paddingTop: "50px" }}>
       <div className="max-w-md mx-auto text-center">
         {/* Logo and Title */}
         <div className="mb-8">

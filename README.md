@@ -10,20 +10,20 @@ A modern React-based web application for configuring FirminIA V3 devices via Web
 
 ## 📋 Table of Contents
 
-- [🚀 Features](#-features)
-- [📋 Prerequisites](#-prerequisites)
-- [🛠️ Installation](#️-installation)
-- [📱 Usage](#-usage)
-- [🔧 Configuration Format](#-configuration-format)
-- [🏗️ Technical Architecture](#️-technical-architecture)
-- [🎨 UI/UX Features](#-uiux-features)
-- [📸 Screenshots](#-screenshots)
-- [🚨 Troubleshooting](#-troubleshooting)
-- [📦 Dependencies](#-dependencies)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
-- [📞 Support](#-support)
-- [🔄 Version History](#-version-history)
+- [Features](#-features)
+- [Prerequisites](#-prerequisites)
+- [Installation](#️-installation)
+- [Usage](#-usage)
+- [Configuration Format](#-configuration-format)
+- [Technical Architecture](#️-technical-architecture)
+- [UI/UX Features](#-uiux-features)
+- [Screenshots](#-screenshots)
+- [Troubleshooting](#-troubleshooting)
+- [Dependencies](#-dependencies)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Support](#-support)
+- [Version History](#-version-history)
 
 ## 🚀 Features
 

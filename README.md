@@ -74,9 +74,9 @@ The application sends JSON configuration data to the device:
 {
   "ssid": "your-wifi-network",
   "password": "your-wifi-password",
-  "server": "askmesign.askmesuite.com",
+  "server": "sign.askme.it",
   "port": "443",
-  "url": "https://askmesign.askmesuite.com/api/v2/files/pending?page=0&size=1",
+  "url": "https://sign.askme.it/api/v2/files/pending?page=0&size=1",
   "token": "your-auth-token",
   "user": "your-username",
   "interval": "300000"
@@ -119,6 +119,7 @@ Based on C++ device-side validation:
 - **Responsive Design**: Mobile-first design with Tailwind CSS
 - **Interactive Elements**: Pointer cursors on all clickable elements
 - **Input Styling**: Custom background colors (#E4F2FF default, #FEFCED on focus)
+- **Web Accessibility**: Compatible with WCAG 2.1 AA 
 
 ## 🚨 Troubleshooting
 
@@ -174,8 +175,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 For support and questions:
-- **Email**: support@firminia.com
-- **Documentation**: [FirminIA V3 Documentation](https://docs.firminia.com)
+- **Email**: biso@biso.it
 - **Issues**: [GitHub Issues](https://github.com/yourusername/firminia3-react-app/issues)
 
 ## 🔄 Version History
@@ -187,4 +187,4 @@ For support and questions:
 
 ---
 
-**Note**: This application requires a FirminIA V3 device and Web Bluetooth API support. For best results, use Chrome or Edge on desktop or Android devices. 
+**Note**: This application requires a FirminIA V3 device and a browser with Web Bluetooth API support. For best results, use Chrome or Edge on desktop or Android devices. 

@@ -8,6 +8,11 @@
 
 A modern React-based web application for configuring FirminIA V3 devices via Web Bluetooth API. This application provides an intuitive interface for discovering, connecting to, and sending configuration parameters to FirminIA V3 Bluetooth devices with real-time validation and connection monitoring.
 
+<div align="center">
+  <img src="support-data/images/1753794858182.jpg" alt="Firminia V3 App - Animated loading screen" width="582"/>
+
+</div>
+
 ## 📋 Table of Contents
 
 - [Features](#-features)

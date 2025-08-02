@@ -13,6 +13,13 @@ A modern React-based web application for configuring FirminIA V3 devices via Web
 
 </div>
 
+## 🔗 Related Projects
+
+This React application is part of the **FirminIA V3 ecosystem**. For the complete solution, you'll also need:
+
+### 🏗️ [FirminIA V3 Hardware Repository](https://github.com/bisontebiscottato/firminia3)
+
+
 ## 📋 Table of Contents
 
 - [Features](#-features)
@@ -170,6 +177,8 @@ const encoder = new TextEncoder();
 const data = encoder.encode(JSON.stringify(config));
 await characteristic.writeValue(data);
 ```
+
+**Hardware Implementation**: The ESP32-S3 firmware in the [hardware repository](https://github.com/bisontebiscottato/firminia3) implements the corresponding GATT services and characteristics to receive this configuration data.
 
 ### Connection Management
 - **Automatic Discovery**: Filters devices by name containing "firminia"
@@ -356,14 +365,18 @@ This project is licensed under the AGPL 3.0 License - see the [LICENSE](LICENSE)
 
 ### Contact Information
 - **Email**: biso@biso.it
-- **GitHub Issues**: [Create an issue](https://github.com/yourusername/firminia3-react-app/issues)
-- **Documentation**: [FirminIA V3 Docs](https://docs.firminia.com)
+- **React App Issues**: [Create an issue](https://github.com/yourusername/firminia3-react-app/issues)
+- **Hardware Issues**: [Hardware repository issues](https://github.com/bisontebiscottato/firminia3/issues)
 
 ### Getting Help
 1. **Check Troubleshooting**: Review the troubleshooting section above
 2. **Search Issues**: Look for similar problems in GitHub issues
 3. **Create Issue**: Provide detailed information about your problem
 4. **Email Support**: For urgent or private matters
+
+### Repository-Specific Support
+- **React App Issues**: Configuration, Web Bluetooth, UI/UX problems
+- **Hardware Issues**: ESP32 firmware, 3D printing, hardware assembly
 
 ## 🔄 Version History
 

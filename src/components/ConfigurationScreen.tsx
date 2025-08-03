@@ -15,6 +15,7 @@ interface FirminiaConfig {
   interval: string;
   server: string;
   port: string;
+  language: string;
 }
 
 interface ValidationErrors {
@@ -25,6 +26,7 @@ interface ValidationErrors {
   interval?: string;
   server?: string;
   port?: string;
+  language?: string;
 }
 
 interface ConfigurationScreenProps {
@@ -53,8 +55,9 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
     token: "",
     user: "",
     interval: "5", // Default to 5 minutes
-    server: "askmesign.askmesuite.com",
+    server: "sign.askme.it",
     port: "443",
+    language: "0", // Default to English (0)
   };
 
   const [config, setConfig] = useState<FirminiaConfig>(originalConfig);
@@ -125,6 +128,17 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
         const port = parseInt(value);
         if (port < 1 || port > 65535) {
           return 'Port must be between 1 and 65535';
+        }
+        break;
+      
+      case 'language':
+        if (!value || value.trim().length === 0) {
+          return 'Language is required';
+        }
+        // Validation for language values: "0" (English), "1" (Italian), "2" (French), "3" (Spanish)
+        const validLanguages = ['0', '1', '2', '3'];
+        if (!validLanguages.includes(value)) {
+          return 'Please select a valid language';
         }
         break;
     }
@@ -212,6 +226,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
         token: config.token,
         user: config.user,
         interval: intervalMilliseconds.toString(),
+        language: config.language,
       });
       if (onSaveConfig) {
         await onSaveConfig(config);
@@ -290,6 +305,17 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
         { value: "15", label: "15 minutes" },
         { value: "30", label: "30 minutes" },
         { value: "60", label: "60 minutes" },
+      ],
+    },
+    {
+      key: "language",
+      label: "Language for the device",
+      type: "select",
+      options: [
+        { value: "0", label: "English" },
+        { value: "1", label: "Italian" },
+        { value: "2", label: "French" },
+        { value: "3", label: "Spanish" },
       ],
     },
   ];

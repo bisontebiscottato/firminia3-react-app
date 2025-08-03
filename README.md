@@ -122,6 +122,7 @@ Fill in the required configuration fields with real-time validation:
 | **Token** | Required | Alphanumeric only | Authentication token |
 | **User** | Required | Any format | Username for authentication |
 | **Interval** | Required | 3,5,10,15,30,60 min | Update interval in minutes |
+| **Language** | Required | 0,1,2,3 | Interface language for the device |
 
 ### 4. Send Configuration
 - Click **"Send to device"** to transmit the configuration
@@ -143,9 +144,21 @@ The application sends JSON configuration data to the device with the following s
   "url": "https://sign.askme.it/api/v2/files/pending?page=0&size=1",
   "token": "your-auth-token",
   "user": "your-username",
-  "interval": "300000"
+  "interval": "300000",
+  "language": "0"
 }
 ```
+
+### Language Options
+
+The language parameter controls the interface language of the FirminIA V3 device:
+
+| Value | Language | Description |
+|-------|----------|-------------|
+| **"0"** | English | Default language (recommended) |
+| **"1"** | Italian | Italian interface |
+| **"2"** | French | French interface |
+| **"3"** | Spanish | Spanish interface |
 
 ### Data Flow
 1. **Input Validation** → Real-time field validation
@@ -199,6 +212,7 @@ Based on C++ device-side validation:
 | **Token** | `alphanumeric only` | "Token must be alphanumeric" |
 | **User** | `length > 0` | "User is required" |
 | **Interval** | `[3,5,10,15,30,60]` | "Select a valid interval" |
+| **Language** | `[0,1,2,3]` | "Please select a valid language" |
 
 ## 🎨 UI/UX Features
 
@@ -377,15 +391,6 @@ This project is licensed under the AGPL 3.0 License - see the [LICENSE](LICENSE)
 ### Repository-Specific Support
 - **React App Issues**: Configuration, Web Bluetooth, UI/UX problems
 - **Hardware Issues**: ESP32 firmware, 3D printing, hardware assembly
-
-## 🔄 Version History
-
-| Version | Date | Changes |
-|---------|------|---------|
-| **v1.3.0** | 2024-01-15 | Added real-time connection status and automatic reconnection |
-| **v1.2.0** | 2024-01-10 | Improved UI/UX and connection management |
-| **v1.1.0** | 2024-01-05 | Added comprehensive input validation |
-| **v1.0.0** | 2024-01-01 | Initial release with Web Bluetooth integration |
 
 ---
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { CheckCircle, XCircle, Bluetooth } from "lucide-react";
+import { useTranslation } from 'react-i18next';
+import { CheckCircle, XCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -32,7 +33,6 @@ interface ValidationErrors {
 interface ConfigurationScreenProps {
   onBack?: () => void;
   onSaveConfig?: (config: FirminiaConfig) => Promise<void>;
-  onRefresh?: () => void;
   isConnected: boolean;
   connectedDevice: BluetoothDeviceInfo | null;
   connectToDevice: (device: BluetoothDeviceInfo) => Promise<any>;
@@ -42,12 +42,12 @@ interface ConfigurationScreenProps {
 const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
   onBack,
   onSaveConfig,
-  onRefresh,
   isConnected,
   connectedDevice,
   connectToDevice,
   sendConfiguration,
 }) => {
+  const { t } = useTranslation();
   // Current configuration (in a real app this would be loaded from device)
   const originalConfig: FirminiaConfig = {
     ssid: "",
@@ -69,76 +69,76 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
     switch (field) {
       case 'ssid':
         if (!value || value.trim().length === 0) {
-          return 'SSID is required';
+          return t('configuration.validation.ssidRequired');
         }
         if (value.trim().length < 1) {
-          return 'SSID must be at least 1 character';
+          return t('configuration.validation.ssidMinLength');
         }
         break;
       
       case 'password':
         // Password can be empty as in original C++
         if (value === undefined || value === null) {
-          return 'Password is required';
+          return t('configuration.validation.passwordRequired');
         }
         break;
       
       case 'token':
         if (!value) {
-          return 'Token is required';
+          return t('configuration.validation.tokenRequired');
         }
         if (!/^[a-zA-Z0-9]+$/.test(value)) {
-          return 'Token must contain only letters and numbers';
+          return t('configuration.validation.tokenFormat');
         }
         break;
       
       case 'user':
         if (!value) {
-          return 'Username is required';
+          return t('configuration.validation.userRequired');
         }
         break;
       
       case 'interval':
         if (!value || value.trim().length === 0) {
-          return 'Interval is required';
+          return t('configuration.validation.intervalRequired');
         }
         // Validation for minutes (3, 5, 10, 15, 30, 60)
         const validMinutes = ['3', '5', '10', '15', '30', '60'];
         if (!validMinutes.includes(value)) {
-          return 'Please select a valid interval';
+          return t('configuration.validation.intervalInvalid');
         }
         break;
       
       case 'server':
         if (!value || value.trim().length === 0) {
-          return 'Server is required';
+          return t('configuration.validation.serverRequired');
         }
         if (!value.includes('.')) {
-          return 'Server must contain at least one dot';
+          return t('configuration.validation.serverFormat');
         }
         break;
       
       case 'port':
         if (!value || value.trim().length === 0) {
-          return 'Port is required';
+          return t('configuration.validation.portRequired');
         }
         if (!/^\d+$/.test(value)) {
-          return 'Port must contain only digits';
+          return t('configuration.validation.portFormat');
         }
         const port = parseInt(value);
         if (port < 1 || port > 65535) {
-          return 'Port must be between 1 and 65535';
+          return t('configuration.validation.portRange');
         }
         break;
       
       case 'language':
         if (!value || value.trim().length === 0) {
-          return 'Language is required';
+          return t('configuration.validation.languageRequired');
         }
         // Validation for language values: "0" (English), "1" (Italian), "2" (French), "3" (Spanish)
         const validLanguages = ['0', '1', '2', '3'];
         if (!validLanguages.includes(value)) {
-          return 'Please select a valid language';
+          return t('configuration.validation.languageInvalid');
         }
         break;
     }
@@ -178,22 +178,13 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
 
 
 
-  // Show real-time connection status
-  const renderConnectionStatus = () => (
-    <div className="flex items-center justify-center gap-2">
-      <Bluetooth size={18} className={isConnected ? "text-success" : "text-orange-500"} />
-      <span style={{ color: isConnected ? "#007556" : "#ef4444", fontWeight: 500 }}>
-        {isConnected ? `Connected to ${connectedDevice?.name || "device"}` : "Not connected"}
-      </span>
-    </div>
-  );
 
   // Send with reconnection attempt if not connected
   const handleSave = async () => {
     // Validation before sending
     if (!validateAllFields()) {
-      toast.error("Validation failed", {
-        description: "Please fix the errors in the form before sending",
+      toast.error(t('configuration.actions.error'), {
+        description: t('configuration.actions.validationError'),
         icon: <XCircle size={20} style={{ color: "#ef4444" }} />,
       });
       return;
@@ -205,14 +196,14 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
       // If not connected, try to reconnect
       if (!connected) {
         if (connectedDevice) {
-          toast("Trying to reconnect to device...");
+          toast(t('configuration.actions.reconnecting'));
           await connectToDevice(connectedDevice);
           connected = true;
         } else {
-          throw new Error("Device not connected");
+          throw new Error(t('configuration.validation.deviceNotConnected'));
         }
       }
-      if (!connected) throw new Error("Device not connected");
+      if (!connected) throw new Error(t('configuration.validation.deviceNotConnected'));
       // Convert minutes to milliseconds
       const intervalMinutes = parseInt(config.interval);
       const intervalMilliseconds = intervalMinutes * 60 * 1000;
@@ -232,8 +223,8 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
         await onSaveConfig(config);
       }
       setIsLoading(false);
-      toast.success("Configuration saved", {
-        description: "Parameters have been sent to FirminIA V3 device",
+      toast.success(t('configuration.actions.success'), {
+        description: t('configuration.actions.successDescription'),
         icon: <CheckCircle size={20} style={{ color: "#007556" }} />,
       });
       setTimeout(() => {
@@ -243,7 +234,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
       }, 1500);
     } catch (error: any) {
       setIsLoading(false);
-      toast.error("Error during save", {
+      toast.error(t('configuration.actions.error'), {
         description:
           error?.message || "Unable to send configuration to device. Please try again.",
         icon: <XCircle size={20} style={{ color: "#ef4444" }} />,
@@ -258,82 +249,84 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
     }
   };
 
+  const getSelectOptions = (optionsKey: string) => {
+    if (optionsKey === "intervals") {
+      return [
+        { value: "3", label: t('configuration.intervals.3') },
+        { value: "5", label: t('configuration.intervals.5') },
+        { value: "10", label: t('configuration.intervals.10') },
+        { value: "15", label: t('configuration.intervals.15') },
+        { value: "30", label: t('configuration.intervals.30') },
+        { value: "60", label: t('configuration.intervals.60') },
+      ];
+    } else if (optionsKey === "languages") {
+      return [
+        { value: "0", label: t('configuration.languages.0') },
+        { value: "1", label: t('configuration.languages.1') },
+        { value: "2", label: t('configuration.languages.2') },
+        { value: "3", label: t('configuration.languages.3') },
+      ];
+    }
+    return [];
+  };
+
   const configFields: Array<{
     key: keyof FirminiaConfig;
-    label: string;
+    labelKey: string;
     type: "text" | "number" | "select";
-    options?: Array<{ value: string; label: string }>;
+    optionsKey?: string;
   }> = [
     {
       key: "ssid",
-      label: "Your WiFi network name (SSID)",
+      labelKey: "configuration.fields.ssid",
       type: "text",
     },
     {
       key: "password",
-      label: "Your WiFi network password",
+      labelKey: "configuration.fields.password",
       type: "text",
     },
     {
       key: "server",
-      label: "AskMeSign server address",
+      labelKey: "configuration.fields.server",
       type: "text",
     },
     {
       key: "port",
-      label: "Server port",
+      labelKey: "configuration.fields.port",
       type: "number",
     },
     {
       key: "token",
-      label: "Your AskMeSign token",
+      labelKey: "configuration.fields.token",
       type: "text",
     },
     {
       key: "user",
-      label: "Username you use to access AskMeSign",
+      labelKey: "configuration.fields.user",
       type: "text",
     },
     {
       key: "interval",
-      label: "How often to check for documents to sign",
+      labelKey: "configuration.fields.interval",
       type: "select",
-      options: [
-        { value: "3", label: "3 minutes" },
-        { value: "5", label: "5 minutes" },
-        { value: "10", label: "10 minutes" },
-        { value: "15", label: "15 minutes" },
-        { value: "30", label: "30 minutes" },
-        { value: "60", label: "60 minutes" },
-      ],
+      optionsKey: "intervals",
     },
     {
       key: "language",
-      label: "Language for the device",
+      labelKey: "configuration.fields.language",
       type: "select",
-      options: [
-        { value: "0", label: "English" },
-        { value: "1", label: "Italian" },
-        { value: "2", label: "French" },
-        { value: "3", label: "Spanish" },
-      ],
+      optionsKey: "languages",
     },
   ];
 
   return (
-    <div className="h-screen bg-background overflow-hidden" style={{ paddingTop: "50px", paddingBottom: "100px" }}>
-      {/* Header */}
-      <div className="sticky top-0 border-b border-border px-6 py-4" style={{ top: "0px", backgroundColor: "#F2F8F6", zIndex: 1001 }}>
-        <div className="flex items-center justify-center">
-
-        </div>
-        {/* Stato connessione realtime */}
-        {renderConnectionStatus()}
-      </div>
-
+    <div className="h-screen bg-background overflow-hidden" style={{ paddingBottom: "100px" }}>
       {/* Form */}
       <div className="p-6 pb-32 overflow-y-auto h-full" style={{ paddingTop: "50px" }}>
-        <h1 className="text-center" style={{ fontSize: "1.5rem", fontWeight: "600", color: "#111111", fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif", lineHeight: "1.4", paddingBottom: "20px"}}>Settings configuration</h1>
+        <h1 className="text-center" style={{ fontSize: "1.5rem", fontWeight: "600", color: "#111111", fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif", lineHeight: "1.4", paddingBottom: "20px"}}>
+          {t('configuration.title')} {connectedDevice?.name || "Unknown Device"}
+        </h1>
         <div className="max-w-md mx-auto space-y-6">
           {configFields.map((field) => (
             <div key={field.key} className="space-y-2">
@@ -348,7 +341,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
                   lineHeight: "1.4",
                 }}
               >
-                {field.label}
+                {t(field.labelKey)}
               </Label>
               {field.type === "select" ? (
                 <Select
@@ -374,10 +367,10 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
                     e.target.style.backgroundColor = "#E4F2FF";
                   }}
                   >
-                    <SelectValue placeholder="Select an option" />
+                    <SelectValue placeholder={t('configuration.actions.selectOption')} />
                   </SelectTrigger>
                   <SelectContent>
-                    {field.options?.map((option) => (
+                    {field.optionsKey && getSelectOptions(field.optionsKey).map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
                       </SelectItem>
@@ -440,7 +433,7 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
               fontWeight: "500",
             }}
           >
-            Discard
+            {t('configuration.actions.discard')}
           </Button>
           <Button
             onClick={handleSave}
@@ -460,10 +453,10 @@ const ConfigurationScreen: React.FC<ConfigurationScreenProps> = ({
             {isLoading ? (
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span style={{ fontSize: "1rem" }}>Sending...</span>
+                <span style={{ fontSize: "1rem" }}>{t('configuration.actions.saving')}</span>
               </div>
             ) : (
-              "Send to device"
+              t('configuration.actions.save')
             )}
           </Button>
         </div>

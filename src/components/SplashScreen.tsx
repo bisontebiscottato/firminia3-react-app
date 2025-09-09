@@ -100,7 +100,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onLoadComplete }) => {
               "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
           }}
         >
-          Loading...
         </p>
       </div>
 
@@ -116,7 +115,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onLoadComplete }) => {
               "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
           }}
         >
-          Version 1.2.0 - Andrea Mancini | <a href="mailto:biso@biso.it">biso@biso.it</a>
+          Version 1.3.0 - Andrea Mancini | <a href="mailto:biso@biso.it">biso@biso.it</a>
         </p>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import SplashScreen from "./components/SplashScreen";
 import IntroductionScreen from "./components/IntroductionScreen";
 import BluetoothOffScreen from "./components/BluetoothOffScreen";
@@ -32,6 +33,7 @@ const MainApp: React.FC<{
   onDisconnect: () => void;
   onOpenConfiguration: () => void;
 }> = ({ connectedDevice, onDisconnect, onOpenConfiguration }) => {
+  const { t } = useTranslation();
   const [signalStrength, setSignalStrength] = React.useState<"strong" | "weak">(
     "strong"
   );
@@ -56,9 +58,9 @@ const MainApp: React.FC<{
           <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
             <Bluetooth size={32} className="text-primary" />
           </div>
-          <h1 className="mb-2">FirminIA V3</h1>
+          <h1 className="mb-2">{t('mainApp.title')}</h1>
           <p className="text-muted-foreground">
-            Connected device - Active session
+            {t('mainApp.connectedDevice')}
           </p>
         </div>
 
@@ -66,10 +68,10 @@ const MainApp: React.FC<{
           {/* Connection status */}
           <div className="bg-card p-6 rounded-lg border border-border">
             <div className="flex items-center justify-between mb-4">
-              <h2>Connected device</h2>
+              <h2>{t('mainApp.connectionStatus')}</h2>
               <div className="flex items-center gap-2 text-success">
                 <div className="w-2 h-2 bg-success rounded-full"></div>
-                <span className="text-sm">Connected</span>
+                <span className="text-sm">{t('mainApp.connected')}</span>
               </div>
             </div>
 
@@ -93,8 +95,8 @@ const MainApp: React.FC<{
                   )}
                   <span>
                     {signalStrength === "strong"
-                      ? "Strong signal"
-                      : "Weak signal"}
+                      ? t('mainApp.strongSignal')
+                      : t('mainApp.weakSignal')}
                   </span>
                 </div>
               </div>
@@ -103,7 +105,7 @@ const MainApp: React.FC<{
 
           {/* Main action */}
           <div className="bg-card p-6 rounded-lg border border-border">
-            <h3 className="mb-4">Configuration management</h3>
+            <h3 className="mb-4">{t('mainApp.configurationManagement')}</h3>
 
             <Button
               onClick={onOpenConfiguration}
@@ -117,13 +119,13 @@ const MainApp: React.FC<{
               }}
             >
               <Settings size={20} className="mr-3" />
-              Configure parameters
+{t('mainApp.configureParameters')}
             </Button>
           </div>
 
           {/* Other options */}
           <div className="bg-card p-6 rounded-lg border border-border">
-            <h3 className="mb-4">Other options</h3>
+            <h3 className="mb-4">{t('mainApp.otherOptions')}</h3>
             <div className="space-y-3">
               <Button
                 variant="outline"
@@ -133,7 +135,7 @@ const MainApp: React.FC<{
               >
                 <div className="flex items-center gap-3">
                   <Settings size={20} className="text-primary" />
-                  <span>Disconnect device</span>
+                  <span>{t('mainApp.disconnectDevice')}</span>
                 </div>
                 <ArrowRight size={16} className="text-muted-foreground" />
               </Button>
@@ -150,7 +152,7 @@ const MainApp: React.FC<{
                   "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
               }}
             >
-              <strong>FirminIA V3</strong> - Version 1.2.0 - Andrea Mancini, biso@biso.it
+{t('mainApp.versionInfo')}
             </p>
           </div>
         </div>
@@ -161,6 +163,7 @@ const MainApp: React.FC<{
 
 // Component to manage app flow
 const AppFlow: React.FC<{ bluetooth: ReturnType<typeof useBluetooth> }> = ({ bluetooth }) => {
+  const { t } = useTranslation();
   const {
     isEnabled: isBluetoothEnabled,
     isChecking: isCheckingBluetooth,
@@ -193,7 +196,7 @@ const AppFlow: React.FC<{ bluetooth: ReturnType<typeof useBluetooth> }> = ({ blu
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Checking Bluetooth status....</p>
+          <p className="text-muted-foreground">{t('bluetooth.checkingStatus')}</p>
         </div>
       </div>
     );

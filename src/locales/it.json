@@ -1,0 +1,127 @@
+{
+  "header": {
+    "title": "Configuratore FirminIA V3"
+  },
+  "introduction": {
+    "title": "Benvenuto Firmatario!",
+    "subtitle": "Configura il tuo dispositivo Firminia V3 facilmente tramite Bluetooth",
+    "beforeStart": "Prima di iniziare:",
+    "instructions": {
+      "pairing": "Assicurati che il tuo dispositivo FirminIA V3 sia acceso e in modalità pairing premendo il pulsante durante l'avvio",
+      "bluetooth": "Abilita il Bluetooth sul tuo telefono o laptop/desktop PC/MAC",
+      "proximity": "Mantieni entrambi i dispositivi vicini durante la configurazione",
+      "wifi": "Tieni pronti il nome della tua rete WiFi e la password",
+      "apiKey": "Tieni pronta la tua Chiave API personale, puoi trovarla nelle preferenze del tuo account AskMeSign"
+    },
+    "getStarted": "Inizia",
+    "version": "Versione 1.2.0 - Andrea Mancini"
+  },
+  "mainApp": {
+    "title": "FirminIA V3",
+    "connectedDevice": "Dispositivo connesso - Sessione attiva",
+    "connectionStatus": "Dispositivo connesso",
+    "connected": "Connesso",
+    "strongSignal": "Segnale forte",
+    "weakSignal": "Segnale debole",
+    "configurationManagement": "Gestione configurazione",
+    "configureParameters": "Configura parametri",
+    "otherOptions": "Altre opzioni",
+    "disconnectDevice": "Disconnetti dispositivo",
+    "versionInfo": "FirminIA V3 - Versione 1.2.0 - Andrea Mancini, biso@biso.it"
+  },
+  "bluetooth": {
+    "checkingStatus": "Controllo stato Bluetooth....",
+    "bluetoothOff": {
+      "title": "Il Bluetooth è disabilitato",
+      "subtitle": "Per continuare, abilita il Bluetooth sul tuo dispositivo",
+      "openSettings": "Apri Impostazioni Bluetooth",
+      "tryAgain": "Riprova"
+    },
+    "pairing": {
+      "title": "Connetti a FirminIA V3",
+      "subtitle": "Assicurati che il tuo dispositivo sia in modalità pairing",
+      "scanning": "Ricerca dispositivi...",
+      "noDevices": "Nessun dispositivo trovato",
+      "connect": "Connetti",
+      "connecting": "Connessione...",
+      "connected": "Connesso!",
+      "failed": "Connessione fallita",
+      "retry": "Riprova",
+      "back": "Indietro",
+      "webBluetoothNotSupported": "Web Bluetooth non supportato",
+      "webBluetoothError": "Il tuo browser non supporta le API Web Bluetooth. Usa Google Chrome o Microsoft Edge su desktop o Android.",
+      "searchingDevices": "Ricerca dispositivi",
+      "foundDevices": "Dispositivi trovati",
+      "selectDevice": "Seleziona questo dispositivo per connetterti",
+      "tip": "💡 Assicurati che il tuo dispositivo FirminIA V3 sia in modalità pairing"
+    }
+  },
+  "configuration": {
+    "title": "Configurazione Dispositivo",
+    "fields": {
+      "ssid": "Nome della tua rete WiFi (SSID)",
+      "password": "Password della tua rete WiFi",
+      "server": "Indirizzo server AskMeSign",
+      "port": "Porta del server",
+      "token": "Il tuo token AskMeSign",
+      "user": "Nome utente per accedere ad AskMeSign",
+      "interval": "Ogni quanto controllare i documenti da firmare",
+      "language": "Lingua per il dispositivo"
+    },
+    "intervals": {
+      "3": "3 minuti",
+      "5": "5 minuti",
+      "10": "10 minuti",
+      "15": "15 minuti",
+      "30": "30 minuti",
+      "60": "60 minuti"
+    },
+    "languages": {
+      "0": "Inglese",
+      "1": "Italiano",
+      "2": "Francese",
+      "3": "Spagnolo"
+    },
+    "actions": {
+      "save": "Invia al dispositivo",
+      "discard": "Annulla",
+      "saving": "Invio...",
+      "success": "Configurazione salvata con successo!",
+      "successDescription": "I parametri sono stati inviati al dispositivo FirminIA V3",
+      "error": "Errore nel salvataggio della configurazione",
+      "errorDescription": "Impossibile inviare la configurazione al dispositivo. Riprova.",
+      "validationError": "Correggi gli errori nel modulo prima di inviare",
+      "selectOption": "Seleziona un'opzione",
+      "reconnecting": "Tentativo di riconnessione al dispositivo..."
+    },
+    "status": {
+      "connected": "Connesso a",
+      "notConnected": "Non connesso"
+    },
+    "validation": {
+      "ssidRequired": "SSID è richiesto",
+      "ssidMinLength": "SSID deve essere almeno 1 carattere",
+      "passwordRequired": "Password è richiesta",
+      "tokenRequired": "Token è richiesto",
+      "tokenFormat": "Token deve contenere solo lettere e numeri",
+      "userRequired": "Nome utente è richiesto",
+      "intervalRequired": "Intervallo è richiesto",
+      "intervalInvalid": "Seleziona un intervallo valido",
+      "serverRequired": "Server è richiesto",
+      "serverFormat": "Server deve contenere almeno un punto",
+      "portRequired": "Porta è richiesta",
+      "portFormat": "Porta deve contenere solo numeri",
+      "portRange": "Porta deve essere tra 1 e 65535",
+      "languageRequired": "Lingua è richiesta",
+      "languageInvalid": "Seleziona una lingua valida",
+      "deviceNotConnected": "Dispositivo non connesso"
+    }
+  },
+  "language": {
+    "select": "Seleziona Lingua",
+    "english": "English",
+    "italian": "Italiano",
+    "spanish": "Español",
+    "french": "Français"
+  }
+}

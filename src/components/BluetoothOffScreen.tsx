@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { BluetoothOff, Settings } from 'lucide-react';
 import { Button } from './ui/button';
 
@@ -11,6 +12,7 @@ const BluetoothOffScreen: React.FC<BluetoothOffScreenProps> = ({
   onOpenSettings, 
   onBack 
 }) => {
+  const { t } = useTranslation();
   const handleOpenSettings = () => {
     if (onOpenSettings) {
       onOpenSettings();
@@ -51,7 +53,7 @@ const BluetoothOffScreen: React.FC<BluetoothOffScreenProps> = ({
               lineHeight: '1.4'
             }}
           >
-            Bluetooth off
+            {t('bluetooth.bluetoothOff.title')}
           </h1>
           
           <p 
@@ -64,7 +66,7 @@ const BluetoothOffScreen: React.FC<BluetoothOffScreenProps> = ({
               lineHeight: '1.6'
             }}
           >
-            Turn on Bluetooth on your smartphone to continue
+            {t('bluetooth.bluetoothOff.subtitle')}
           </p>
         </div>
 
@@ -81,7 +83,7 @@ const BluetoothOffScreen: React.FC<BluetoothOffScreenProps> = ({
             }}
           >
             <Settings size={20} className="mr-2" />
-            Open Settings
+            {t('bluetooth.bluetoothOff.openSettings')}
           </Button>
           
           {onBack && (
@@ -96,7 +98,7 @@ const BluetoothOffScreen: React.FC<BluetoothOffScreenProps> = ({
                 fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif'
               }}
             >
-              Check now
+              {t('bluetooth.bluetoothOff.tryAgain')}
             </Button>
           )}
         </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import { Button } from "./ui/button";
 import { Bluetooth, Smartphone, CheckCircle, ArrowRight } from "lucide-react";
 import { logo } from "../assets/assets";
@@ -10,6 +11,10 @@ interface IntroductionScreenProps {
 const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
   onContinue,
 }) => {
+  const { t, i18n } = useTranslation();
+  
+  // console.log('IntroductionScreen - Current language:', i18n.language);
+
   return (
     <div className="h-screen bg-background flex flex-col items-center justify-center px-6 py-8 overflow-hidden" style={{ paddingTop: "50px" }}>
       <div className="max-w-md mx-auto text-center">
@@ -34,7 +39,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
               lineHeight: "1.2",
             }}
           >
-            Welcome Signer!
+            {t('introduction.title')}
           </h1>
           <p
             className="text-center"
@@ -47,7 +52,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
               lineHeight: "1.5",
             }}
           >
-            Configure your Firminia V3 device easily via Bluetooth
+            {t('introduction.subtitle')}
           </p>
         </div>
 
@@ -63,7 +68,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
                 "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
             }}
           >
-            Before you start:
+            {t('introduction.beforeStart')}
           </h3>
 
           <div className="space-y-3 text-left">
@@ -82,7 +87,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
                   lineHeight: "1.5",
                 }}
               >
-                Make sure your FirminIA V3 device is powered on and in pairing mode by pressing the button during wake-up
+                {t('introduction.instructions.pairing')}
               </p>
             </div>
 
@@ -101,7 +106,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
                   lineHeight: "1.5",
                 }}
               >
-                Enable Bluetooth on your phone or laptop/desktop PC/MAC
+                {t('introduction.instructions.bluetooth')}
               </p>
             </div>
 
@@ -120,7 +125,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
                   lineHeight: "1.5",
                 }}
               >
-                Keep both devices close together during setup
+                {t('introduction.instructions.proximity')}
               </p>
             </div>
 
@@ -139,7 +144,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
                   lineHeight: "1.5",
                 }}
               >
-                Have your WiFi network name and password ready
+                {t('introduction.instructions.wifi')}
               </p>
             </div>
             <div className="flex items-start gap-3">
@@ -157,7 +162,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
                   lineHeight: "1.5",
                 }}
               >
-                Have your personal API Key ready, you can find it in your AskMeSign account preferences
+                {t('introduction.instructions.apiKey')}
               </p>
             </div>
           </div>
@@ -176,7 +181,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
             fontWeight: "500",
           }}
         >
-          Get Started
+          {t('introduction.getStarted')}
           <ArrowRight size={20} />
         </Button>
 
@@ -192,7 +197,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
                 "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
             }}
           >
-           Version 1.2.0 - Andrea Mancini | <a href="mailto:biso@biso.it">biso@biso.it</a> 
+           {t('introduction.version')} | <a href="mailto:biso@biso.it">biso@biso.it</a> 
           </p>
         </div>
       </div>

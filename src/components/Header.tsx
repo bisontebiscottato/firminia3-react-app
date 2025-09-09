@@ -1,6 +1,10 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from './LanguageSelector';
 
 const Header: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <div
       style={{
@@ -12,7 +16,9 @@ const Header: React.FC = () => {
         backgroundColor: "#eeeeee",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "space-between",
+        paddingLeft: "20px",
+        paddingRight: "20px",
         zIndex: 1000,
         fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
         fontSize: "0.8rem",
@@ -20,7 +26,13 @@ const Header: React.FC = () => {
         color: "#111111",
       }}
     >
-      FirminIA V3 configurator
+      <div style={{ flex: 1 }} />
+      <div style={{ textAlign: "center", flex: 1 }}>
+        {t('header.title')}
+      </div>
+      <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+        <LanguageSelector />
+      </div>
     </div>
   );
 };

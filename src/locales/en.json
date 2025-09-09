@@ -1,0 +1,127 @@
+{
+  "header": {
+    "title": "FirminIA V3 configurator"
+  },
+  "introduction": {
+    "title": "Welcome Signer!",
+    "subtitle": "Configure your Firminia V3 device easily via Bluetooth",
+    "beforeStart": "Before you start:",
+    "instructions": {
+      "pairing": "Make sure your FirminIA V3 device is powered on and in pairing mode by pressing the button during wake-up",
+      "bluetooth": "Enable Bluetooth on your phone or laptop/desktop PC/MAC",
+      "proximity": "Keep both devices close together during setup",
+      "wifi": "Have your WiFi network name and password ready",
+      "apiKey": "Have your personal API Key ready, you can find it in your AskMeSign account preferences"
+    },
+    "getStarted": "Get Started",
+    "version": "Version 1.2.0 - Andrea Mancini"
+  },
+  "mainApp": {
+    "title": "FirminIA V3",
+    "connectedDevice": "Connected device - Active session",
+    "connectionStatus": "Connected device",
+    "connected": "Connected",
+    "strongSignal": "Strong signal",
+    "weakSignal": "Weak signal",
+    "configurationManagement": "Configuration management",
+    "configureParameters": "Configure parameters",
+    "otherOptions": "Other options",
+    "disconnectDevice": "Disconnect device",
+    "versionInfo": "FirminIA V3 - Version 1.2.0 - Andrea Mancini, biso@biso.it"
+  },
+  "bluetooth": {
+    "checkingStatus": "Checking Bluetooth status....",
+    "bluetoothOff": {
+      "title": "Bluetooth is disabled",
+      "subtitle": "To continue, please enable Bluetooth on your device",
+      "openSettings": "Open Bluetooth Settings",
+      "tryAgain": "Try Again"
+    },
+    "pairing": {
+      "title": "Connect to FirminIA V3",
+      "subtitle": "Make sure your device is in pairing mode",
+      "scanning": "Scanning for devices...",
+      "noDevices": "No devices found",
+      "connect": "Connect",
+      "connecting": "Connecting...",
+      "connected": "Connected!",
+      "failed": "Connection failed",
+      "retry": "Retry",
+      "back": "Back",
+      "webBluetoothNotSupported": "Web Bluetooth not supported",
+      "webBluetoothError": "Your browser does not support Web Bluetooth API. Use Google Chrome or Microsoft Edge on desktop or Android.",
+      "searchingDevices": "Searching devices",
+      "foundDevices": "Devices found",
+      "selectDevice": "Select this device to connect",
+      "tip": "💡 Make sure your FirminIA V3 device is in pairing mode"
+    }
+  },
+  "configuration": {
+    "title": "Device Configuration",
+    "fields": {
+      "ssid": "Your WiFi network name (SSID)",
+      "password": "Your WiFi network password",
+      "server": "AskMeSign server address",
+      "port": "Server port",
+      "token": "Your AskMeSign token",
+      "user": "Username you use to access AskMeSign",
+      "interval": "How often to check for documents to sign",
+      "language": "Language for the device"
+    },
+    "intervals": {
+      "3": "3 minutes",
+      "5": "5 minutes",
+      "10": "10 minutes",
+      "15": "15 minutes",
+      "30": "30 minutes",
+      "60": "60 minutes"
+    },
+    "languages": {
+      "0": "English",
+      "1": "Italian",
+      "2": "French",
+      "3": "Spanish"
+    },
+    "actions": {
+      "save": "Send to device",
+      "discard": "Discard",
+      "saving": "Sending...",
+      "success": "Configuration saved successfully!",
+      "successDescription": "Parameters have been sent to FirminIA V3 device",
+      "error": "Error saving configuration",
+      "errorDescription": "Unable to send configuration to device. Please try again.",
+      "validationError": "Please fix the errors in the form before sending",
+      "selectOption": "Select an option",
+      "reconnecting": "Trying to reconnect to device..."
+    },
+    "status": {
+      "connected": "Connected to",
+      "notConnected": "Not connected"
+    },
+    "validation": {
+      "ssidRequired": "SSID is required",
+      "ssidMinLength": "SSID must be at least 1 character",
+      "passwordRequired": "Password is required",
+      "tokenRequired": "Token is required",
+      "tokenFormat": "Token must contain only letters and numbers",
+      "userRequired": "Username is required",
+      "intervalRequired": "Interval is required",
+      "intervalInvalid": "Please select a valid interval",
+      "serverRequired": "Server is required",
+      "serverFormat": "Server must contain at least one dot",
+      "portRequired": "Port is required",
+      "portFormat": "Port must contain only digits",
+      "portRange": "Port must be between 1 and 65535",
+      "languageRequired": "Language is required",
+      "languageInvalid": "Please select a valid language",
+      "deviceNotConnected": "Device not connected"
+    }
+  },
+  "language": {
+    "select": "Select Language",
+    "english": "English",
+    "italian": "Italiano",
+    "spanish": "Español",
+    "french": "Français"
+  }
+}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Bluetooth, RotateCcw, CheckCircle, Radio } from 'lucide-react';
 import { Button } from './ui/button';
 import { BluetoothDeviceInfo } from './hooks/useBluetooth';
@@ -24,6 +25,9 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
   startPairing,
   connectToDevice,
 }) => {
+  const { t, i18n } = useTranslation();
+  
+  // console.log('BluetoothPairingScreen - Current language:', i18n.language);
   const [selectedDevice, setSelectedDevice] = useState<BluetoothDeviceInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -32,7 +36,7 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
     setError(null);
     setSelectedDevice(null);
     if (!isBluetoothSupported) {
-      setError('Web Bluetooth API not supported by browser. Use Chrome/Edge on desktop or Android.');
+      setError(t('bluetooth.pairing.webBluetoothError'));
       return;
     }
     try {
@@ -40,7 +44,7 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
       await startPairing();
       console.log('startPairing called!');
     } catch (err: any) {
-      setError(err?.message || 'Bluetooth scanning error');
+        setError(err?.message || t('bluetooth.pairing.failed'));
       console.error('Error in startPairing:', err);
     }
   };
@@ -55,7 +59,7 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
         await connectToDevice(selectedDevice);
         onDeviceConnect(selectedDevice);
       } catch (err: any) {
-        setError(err?.message || 'Bluetooth connection error');
+        setError(err?.message || t('bluetooth.pairing.failed'));
       }
     }
   };
@@ -76,8 +80,8 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
             </div>
           </div>
           <div className="space-y-4">
-            <h1 className="text-center" style={{ fontSize: '1.5rem', fontWeight: '600', color: '#ef4444', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.4' }}>Web Bluetooth not supported</h1>
-            <p className="text-center leading-relaxed" style={{ fontSize: '1rem', fontWeight: '400', color: '#ef4444', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.6' }}>Your browser does not support Web Bluetooth API. Use Google Chrome or Microsoft Edge on desktop or Android.</p>
+            <h1 className="text-center" style={{ fontSize: '1.5rem', fontWeight: '600', color: '#ef4444', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.4' }}>{t('bluetooth.pairing.webBluetoothNotSupported')}</h1>
+            <p className="text-center leading-relaxed" style={{ fontSize: '1rem', fontWeight: '400', color: '#ef4444', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.6' }}>{t('bluetooth.pairing.webBluetoothError')}</p>
           </div>
         </div>
       </div>
@@ -127,27 +131,27 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
         {/* Stato e messaggi */}
         {isPairing || isChecking ? (
           <div className="space-y-4">
-            <h1 className="text-center" style={{ fontSize: '1.5rem', fontWeight: '600', color: '#111111', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.4' }}>Searching device</h1>
-            <p className="text-center leading-relaxed" style={{ fontSize: '1rem', fontWeight: '400', color: '#666666', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.6' }}>To activate pairing, start the device and press the button during wake-up...</p>
+            <h1 className="text-center" style={{ fontSize: '1.5rem', fontWeight: '600', color: '#111111', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.4' }}>{t('bluetooth.pairing.searchingDevices')}</h1>
+            <p className="text-center leading-relaxed" style={{ fontSize: '1rem', fontWeight: '400', color: '#666666', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.6' }}>{t('bluetooth.pairing.tip')}</p>
             <div className="flex items-center justify-center gap-2 text-primary">
               <Radio size={16} className="animate-pulse" />
-              <span className="text-sm" style={{ fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>Searching...</span>
+              <span className="text-sm" style={{ fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>{t('bluetooth.pairing.scanning')}</span>
             </div>
           </div>
         ) : error ? (
           <div className="space-y-4">
-            <h1 className="text-center" style={{ fontSize: '1.5rem', fontWeight: '600', color: '#ef4444', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.4' }}>Bluetooth error</h1>
+            <h1 className="text-center" style={{ fontSize: '1.5rem', fontWeight: '600', color: '#ef4444', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.4' }}>{t('bluetooth.pairing.failed')}</h1>
             <p className="text-center leading-relaxed" style={{ fontSize: '1rem', fontWeight: '400', color: '#ef4444', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.6' }}>{error}</p>
           </div>
         ) : availableDevices.length > 0 ? (
           <div className="space-y-4">
-            <h1 className="text-center" style={{ fontSize: '1.5rem', fontWeight: '600', color: '#111111', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.4' }}>Devices found</h1>
-            <p className="text-center leading-relaxed" style={{ fontSize: '1rem', fontWeight: '400', color: '#666666', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.6' }}>Select your device to connect</p>
+            <h1 className="text-center" style={{ fontSize: '1.5rem', fontWeight: '600', color: '#111111', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.4' }}>{t('bluetooth.pairing.foundDevices')}</h1>
+            <p className="text-center leading-relaxed" style={{ fontSize: '1rem', fontWeight: '400', color: '#666666', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.6' }}>{t('bluetooth.pairing.selectDevice')}</p>
           </div>
         ) : (
           <div className="space-y-4">
-            <h1 className="text-center" style={{ fontSize: '1.5rem', fontWeight: '600', color: '#111111', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.4' }}>No devices found</h1>
-            <p className="text-center leading-relaxed" style={{ fontSize: '1rem', fontWeight: '400', color: '#666666', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.6' }}>Press the button below to search for Bluetooth devices.</p>
+            <h1 className="text-center" style={{ fontSize: '1.5rem', fontWeight: '600', color: '#111111', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.4' }}>{t('bluetooth.pairing.noDevices')}</h1>
+            <p className="text-center leading-relaxed" style={{ fontSize: '1rem', fontWeight: '400', color: '#666666', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.6' }}>{t('bluetooth.pairing.tip')}</p>
             <Button
               onClick={handleRetry}
               className="w-full h-12 mt-4"
@@ -162,7 +166,7 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
               }}
               disabled={isPairing || isChecking}
             >
-              Search for devices
+              {t('bluetooth.pairing.connect')}
             </Button>
           </div>
         )}
@@ -187,7 +191,7 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
                     </div>
                     <div className="text-left">
                       <div className="font-medium" style={{ color: '#111111', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>{device.name}</div>
-                      <div className="text-sm" style={{ color: '#666666', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>Click this box, then press "Select"</div>
+                      <div className="text-sm" style={{ color: '#666666', fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif' }}>{t('bluetooth.pairing.selectDevice')}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -217,27 +221,30 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
               cursor: selectedDevice && !isPairing && !isChecking ? 'pointer' : 'not-allowed'
             }}
           >
-            Select
+{t('bluetooth.pairing.connect')}
           </Button>
         )}
 
         {/* Action buttons */}
         <div className="space-y-3 w-full">
-          <Button
-            onClick={handleRetry}
-            variant="outline"
-            className="w-full h-12 text-base font-medium rounded-lg"
-            style={{
-              borderColor: 'rgba(17, 17, 17, 0.2)',
-              color: '#111111',
-              minHeight: '48px',
-              fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif'
-            }}
-            disabled={isPairing || isChecking}
-          >
-            <RotateCcw size={18} className="mr-2" />
-            Try again
-          </Button>
+          {/* Mostra Retry quando c'è un errore, quando un dispositivo è selezionato, o dopo una connessione riuscita */}
+          {(error || selectedDevice || availableDevices.length > 0) && !(isPairing || isChecking) && (
+            <Button
+              onClick={handleRetry}
+              variant="outline"
+              className="w-full h-12 text-base font-medium rounded-lg"
+              style={{
+                borderColor: 'rgba(17, 17, 17, 0.2)',
+                color: '#111111',
+                minHeight: '48px',
+                fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif'
+              }}
+              disabled={isPairing || isChecking}
+            >
+              <RotateCcw size={18} className="mr-2" />
+              {t('bluetooth.pairing.retry')}
+            </Button>
+          )}
           {onBack && (
             <Button
               onClick={onBack}
@@ -249,7 +256,7 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
                 fontFamily: 'IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif'
               }}
             >
-              Back
+              {t('bluetooth.pairing.back')}
             </Button>
           )}
         </div>
@@ -267,7 +274,7 @@ const BluetoothPairingScreen: React.FC<BluetoothPairingScreenProps> = ({
               lineHeight: '1.5'
             }}
           >
-            💡 Keep your Firminia close to your device during pairing!
+{t('bluetooth.pairing.tip')}
           </p>
         </div>
       </div>

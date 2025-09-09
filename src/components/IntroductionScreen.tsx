@@ -82,7 +82,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
                   lineHeight: "1.5",
                 }}
               >
-                Make sure your FirminIA V3 device is powered on
+                Make sure your FirminIA V3 device is powered on and in pairing mode by pressing the button during wake-up
               </p>
             </div>
 
@@ -101,7 +101,7 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
                   lineHeight: "1.5",
                 }}
               >
-                Enable Bluetooth on your phone
+                Enable Bluetooth on your phone or laptop/desktop PC/MAC
               </p>
             </div>
 
@@ -140,6 +140,24 @@ const IntroductionScreen: React.FC<IntroductionScreenProps> = ({
                 }}
               >
                 Have your WiFi network name and password ready
+              </p>
+            </div>
+            <div className="flex items-start gap-3">
+              <CheckCircle
+                size={20}
+                className="text-primary shrink-0 mt-0.5"
+              />
+              <p
+                style={{
+                  fontSize: "0.875rem",
+                  fontWeight: "400",
+                  color: "#111111",
+                  fontFamily:
+                    "IBM Plex Sans, -apple-system, BlinkMacSystemFont, sans-serif",
+                  lineHeight: "1.5",
+                }}
+              >
+                Have your personal API Key ready, you can find it in your AskMeSign account preferences
               </p>
             </div>
           </div>

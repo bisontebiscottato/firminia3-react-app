@@ -14,7 +14,7 @@
       "apiKey": "Ten lista tu Clave API personal, puedes encontrarla en las preferencias de tu cuenta AskMeSign"
     },
     "getStarted": "Comenzar",
-    "version": "Versión 1.2.0 - Andrea Mancini"
+    "version": "Versión 1.3.0 - Andrea Mancini"
   },
   "mainApp": {
     "title": "FirminIA V3",
@@ -27,7 +27,7 @@
     "configureParameters": "Configurar parámetros",
     "otherOptions": "Otras opciones",
     "disconnectDevice": "Desconectar dispositivo",
-    "versionInfo": "FirminIA V3 - Versión 1.2.0 - Andrea Mancini, biso@biso.it"
+    "versionInfo": "FirminIA V3 - Versión 1.3.0 - Andrea Mancini, biso@biso.it"
   },
   "bluetooth": {
     "checkingStatus": "Verificando estado del Bluetooth....",
